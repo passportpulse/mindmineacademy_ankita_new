@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/form.css";
 import { API_BASE_URL } from "../../src/config/api";
+import courses from "../data/courses";
 
 export default function ApplyForm() {
   const statesAndUTs = [
@@ -48,7 +49,6 @@ export default function ApplyForm() {
   // ---------------------- STATE ----------------------
   const [formData, setFormData] = useState({
     campus: "",
-    campusLocation: "",
     course: "",
     fullName: "",
     dob: "",
@@ -217,39 +217,49 @@ export default function ApplyForm() {
             {step === 1 ? "Personal & Family Info" : "Academic Info"} | Session:
             2025-26
           </p>
+          
         </div>
+        
 
         <form onSubmit={handleSubmit}>
+          <p className="required-note">* Fields are mandatory</p>
           {step === 1 && (
             <>
               <h2>Campus & Course Info</h2>
               <div className="grid-2">
-                <input
+                <select
                   name="campus"
-                  placeholder="Campus"
                   value={formData.campus}
                   onChange={handleChange}
-                />
-                <input
-                  name="campusLocation"
-                  placeholder="Campus Location"
-                  value={formData.campusLocation}
-                  onChange={handleChange}
-                />
-                <input
+                >
+                  <option value="">Select Campus *</option>
+                  <option value="Moulali">Moulali</option>
+                  <option value="Thakurpur">Thakurpur</option>
+                </select>
+
+                <select
                   className="full-width"
                   name="course"
-                  placeholder="Course Applied For *"
                   value={formData.course}
                   onChange={handleChange}
-                />
+                >
+                  <option value="">Select Course *</option>
+                  {courses.map((c) => (
+                    <option
+                      key={c.slug}
+                      value={`${c.title} (${c.type} - ${c.duration})`}
+                    >
+                      {c.title} ({c.type} - {c.duration})
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <h2>Student Details</h2>
               <div className="grid-2">
                 <input
                   name="fullName"
-                  placeholder="Full Name *"
+                  placeholder="Full Name * (as per Aadhaar)"
                   value={formData.fullName}
                   onChange={handleChange}
                 />
@@ -266,7 +276,7 @@ export default function ApplyForm() {
                   value={formData.gender}
                   onChange={handleChange}
                 >
-                  <option value="">Gender</option>
+                  <option value="">Gender *</option>
                   <option>Male</option>
                   <option>Female</option>
                   <option>Other</option>
@@ -295,14 +305,14 @@ export default function ApplyForm() {
                 <textarea
                   className="full-width"
                   name="address"
-                  placeholder="Full Address"
+                  placeholder="Full Address * (House No, Street, Area)"
                   value={formData.address}
                   onChange={handleChange}
                 />
 
                 <input
                   name="city"
-                  placeholder="City"
+                  placeholder="City *"
                   value={formData.city}
                   onChange={handleChange}
                 />
@@ -322,21 +332,21 @@ export default function ApplyForm() {
 
                 <input
                   name="pin"
-                  placeholder="Pin Code"
+                  placeholder="Pin Code * (6 digits)"
                   value={formData.pin}
                   onChange={handleChange}
                 />
 
                 <input
                   name="phone"
-                  placeholder="Contact No *"
+                  placeholder="Contact No * (10 digits)"
                   value={formData.phone}
                   onChange={handleChange}
                 />
                 <input
                   name="email"
                   type="email"
-                  placeholder="Email *"
+                  placeholder="Email * (example@gmail.com)"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -346,7 +356,7 @@ export default function ApplyForm() {
               <div className="grid-2">
                 <input
                   name="fatherName"
-                  placeholder="Father Name"
+                  placeholder="Father Name *"
                   value={formData.fatherName}
                   onChange={handleChange}
                 />
@@ -358,7 +368,7 @@ export default function ApplyForm() {
                 />
                 <input
                   name="fatherPhone"
-                  placeholder="Phone"
+                  placeholder="Father Phone (10 digits)"
                   value={formData.fatherPhone}
                   onChange={handleChange}
                 />
@@ -380,7 +390,7 @@ export default function ApplyForm() {
                 />
                 <input
                   name="motherPhone"
-                  placeholder="Phone"
+                  placeholder="Mother Phone (10 digits)"
                   value={formData.motherPhone}
                   onChange={handleChange}
                 />
@@ -426,19 +436,19 @@ export default function ApplyForm() {
               <div className="grid-2">
                 <input
                   name="lastQualification"
-                  placeholder="Last Qualification *"
+                  placeholder="Last Qualification * (e.g. Inter / Degree)"
                   value={formData.lastQualification}
                   onChange={handleChange}
                 />
                 <input
                   name="passingYear"
-                  placeholder="Year of Passing *"
+                  placeholder="Year of Passing * (e.g. 2022)"
                   value={formData.passingYear}
                   onChange={handleChange}
                 />
                 <input
                   name="previousCourse"
-                  placeholder="Previous Course"
+                  placeholder="Percentage (0–100)"
                   value={formData.previousCourse}
                   onChange={handleChange}
                 />

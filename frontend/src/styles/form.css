@@ -6,7 +6,9 @@
   align-items: flex-start;
   padding: 8rem 0 4rem 0;
 }
-
+.required-note{
+  font-size: 0.8rem;
+}
 .apply-form-card {
   width: 100%;
   max-width: 1000px;

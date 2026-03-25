@@ -2,16 +2,42 @@ const mongoose = require("mongoose");
 
 const enquirySchema = new mongoose.Schema(
   {
-    fullName: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
+    fullName: {
+      type: String,
+      required: [true, "Full name is required"],
+      trim: true,
+      minlength: 3,
+    },
 
-    lastQualification: { type: String, required: true },
+    phone: {
+      type: String,
+      required: true,
+      match: [/^\d{10}$/, "Phone must be 10 digits"],
+    },
 
-    // ✅ CHANGE THIS
-    courseCategory: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email"],
+    },
 
-    message: { type: String, required: true },
+    lastQualification: {
+      type: String,
+      required: true,
+    },
+
+    courseCategory: {
+      type: String,
+      required: true,
+    },
+
+    message: {
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 500,
+    },
   },
   { timestamps: true }
 );

@@ -5,42 +5,84 @@ const applicationSchema = new mongoose.Schema(
     trackingId: { type: String, unique: true },
 
     // Campus
-    campus: String,
-    campusLocation: String,
-    course: String,
+    campus: {
+      type: String,
+      required: [true, "Campus is required"],
+      trim: true,
+    },
+    course: {
+      type: String,
+      required: [true, "Course is required"],
+    },
 
     // Student
-    fullName: { type: String, required: true },
-    dob: String,
-    gender: String,
+    fullName: {
+      type: String,
+      required: [true, "Full name is required"],
+      trim: true,
+      minlength: 3,
+    },
+    dob: {
+      type: Date,
+      required: [true, "Date of birth is required"],
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      required: true,
+    },
     caste: String,
-    aadhaar: String,
-    address: String,
-    city: String,
-    state: String,
-    pin: String,
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
+
+    aadhaar: {
+      type: String,
+      match: [/^\d{12}$/, "Aadhaar must be 12 digits"],
+    },
+
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    pin: {
+      type: String,
+      match: [/^\d{6}$/, "PIN must be 6 digits"],
+    },
+
+    phone: {
+      type: String,
+      required: true,
+      match: [/^\d{10}$/, "Phone must be 10 digits"],
+    },
+
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
+    },
 
     // Parents
-    fatherName: String,
-    fatherOccupation: String,
-    fatherPhone: String,
-    motherName: String,
-    motherOccupation: String,
-    motherPhone: String,
+    fatherName: { type: String, required: true },
+    fatherPhone: {
+      type: String,
+      match: [/^\d{10}$/, "Invalid father phone"],
+    },
 
-    // Guardian
-    guardianName: String,
-    guardianRelation: String,
-    guardianPhone: String,
+    motherName: { type: String },
+    motherPhone: {
+      type: String,
+      match: [/^\d{10}$/, "Invalid mother phone"],
+    },
 
     // Academic
-    lastQualification: String,
-    passingYear: String,
-    previousCourse: String,
-    previousInstitute: String,
-    percentage: String,
+    lastQualification: { type: String, required: true },
+    passingYear: {
+      type: String,
+      match: [/^\d{4}$/, "Year must be 4 digits"],
+    },
+    percentage: {
+      type: Number,
+      min: 0,
+      max: 100,
+    },
 
     // Status
     status: {

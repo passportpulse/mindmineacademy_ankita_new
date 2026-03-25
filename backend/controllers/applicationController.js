@@ -9,21 +9,50 @@ const generateTrackingId = () => {
 
 exports.createApplication = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     const data = req.body;
 
-    // ✅ Basic required validation (match frontend)
-    if (!data.fullName || !data.phone || !data.email || !data.course) {
-      return res.status(400).json({
-        message: "Full Name, Phone, Email, Course are required",
-      });
+    // ✅ Required fields check
+    const requiredFields = [
+      "fullName",
+      "phone",
+      "email",
+      "course",
+      "campus",
+      "dob",
+      "gender",
+      "address",
+      "city",
+      "state",
+      "lastQualification",
+      "fatherName",
+    ];
+
+    for (let field of requiredFields) {
+      if (!data[field]) {
+        return res.status(400).json({
+          message: `${field} is required`,
+        });
+      }
+    }
+
+    // ✅ Phone validation
+    if (!/^\d{10}$/.test(data.phone)) {
+      return res.status(400).json({ message: "Invalid phone number" });
+    }
+
+    // ✅ Email validation
+    if (!/^\S+@\S+\.\S+$/.test(data.email)) {
+      return res.status(400).json({ message: "Invalid email" });
+    }
+
+    // ✅ Aadhaar validation (if provided)
+    if (data.aadhaar && !/^\d{12}$/.test(data.aadhaar)) {
+      return res.status(400).json({ message: "Invalid Aadhaar number" });
     }
 
     // ✅ Generate tracking ID
     const trackingId = generateTrackingId();
 
-    // ✅ Save directly (flat structure)
     const application = await Application.create({
       trackingId,
       ...data,
@@ -35,10 +64,8 @@ exports.createApplication = async (req, res) => {
       trackingId,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({
-      message: "Server error",
-      error: error.message,
+      message: error.message,
     });
   }
 };
@@ -47,20 +74,38 @@ exports.createApplication = async (req, res) => {
 exports.updateApplication = async (req, res) => {
   try {
     const { status, applicationId } = req.body;
-    let updateData = { ...req.body };
-    // validation
-    if (status === "approved") {
-      if (!applicationId) {
-        return res.status(400).json({
-          message: "Application ID is required for approval",
-        });
+
+    // ✅ Only allow specific fields to update
+    const allowedUpdates = ["status", "applicationId"];
+    const updates = {};
+
+    Object.keys(req.body).forEach((key) => {
+      if (allowedUpdates.includes(key)) {
+        updates[key] = req.body[key];
       }
+    });
+
+    // ✅ Status validation
+    if (status && !["pending", "approved", "rejected"].includes(status)) {
+      return res.status(400).json({
+        message: "Invalid status value",
+      });
+    }
+
+    // ✅ Approval requires applicationId
+    if (status === "approved" && !applicationId) {
+      return res.status(400).json({
+        message: "Application ID is required for approval",
+      });
     }
 
     const updated = await Application.findByIdAndUpdate(
       req.params.id,
-      updateData,
-      { new: true },
+      updates,
+      {
+        new: true,
+        runValidators: true, // 🔥 IMPORTANT
+      }
     );
 
     res.json({ success: true, data: updated });
@@ -68,6 +113,7 @@ exports.updateApplication = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Get All Applications
 exports.getApplications = async (req, res) => {
