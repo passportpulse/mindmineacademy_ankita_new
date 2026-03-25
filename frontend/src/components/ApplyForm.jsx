@@ -217,9 +217,7 @@ export default function ApplyForm() {
             {step === 1 ? "Personal & Family Info" : "Academic Info"} | Session:
             2025-26
           </p>
-          
         </div>
-        
 
         <form onSubmit={handleSubmit}>
           <p className="required-note">* Fields are mandatory</p>
@@ -232,7 +230,9 @@ export default function ApplyForm() {
                   value={formData.campus}
                   onChange={handleChange}
                 >
-                  <option value="">Select Campus *</option>
+                  <option disabled value="">
+                    Select Campus *
+                  </option>
                   <option value="Moulali">Moulali</option>
                   <option value="Thakurpur">Thakurpur</option>
                 </select>
@@ -243,7 +243,7 @@ export default function ApplyForm() {
                   value={formData.course}
                   onChange={handleChange}
                 >
-                  <option value="">Select Course *</option>
+                  <option disabled value="">Select Course *</option>
                   {courses.map((c) => (
                     <option
                       key={c.slug}
@@ -276,10 +276,12 @@ export default function ApplyForm() {
                   value={formData.gender}
                   onChange={handleChange}
                 >
-                  <option value="">Gender *</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
+                  <option disabled value="">
+                    Gender *
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
                 </select>
 
                 <select
@@ -287,7 +289,9 @@ export default function ApplyForm() {
                   value={formData.caste}
                   onChange={handleChange}
                 >
-                  <option value="">Caste</option>
+                  <option disabled value="">
+                    Caste
+                  </option>
                   <option>GEN</option>
                   <option>SC</option>
                   <option>ST</option>
@@ -296,7 +300,7 @@ export default function ApplyForm() {
 
                 <input
                   name="aadhaar"
-                  placeholder="Aadhaar No"
+                  placeholder="Aadhaar No (12 digits)"
                   value={formData.aadhaar}
                   onChange={handleChange}
                 />
@@ -322,7 +326,9 @@ export default function ApplyForm() {
                   value={formData.state}
                   onChange={handleChange}
                 >
-                  <option value="">Select State</option>
+                  <option disabled value="">
+                    Select State
+                  </option>
                   {statesAndUTs.map((s) => (
                     <option key={s} value={s}>
                       {s}
