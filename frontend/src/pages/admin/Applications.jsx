@@ -34,8 +34,10 @@ const Applications = () => {
     fetchApps();
   }, [branch]);
 
-  const filteredApps = branch
-    ? apps.filter((app) => app.campus === branch)
+  const normalizedBranch = branch?.replace(" Campus", "");
+
+  const filteredApps = normalizedBranch
+    ? apps.filter((app) => app.campus === normalizedBranch)
     : apps;
 
   const toggleExpand = (id) => {
