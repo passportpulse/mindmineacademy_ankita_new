@@ -1,0 +1,87 @@
+.vision-mission {
+  padding: 4rem 0;
+}
+
+.vm-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 50px;
+}
+
+.vm-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2b1c3a;
+  margin-bottom: 12px;
+}
+
+.vm-header p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.vm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.vm-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.vm-card img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.vm-card:hover img {
+  transform: scale(1.05);
+}
+
+.vm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); 
+  color: #fff;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.vm-overlay h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.vm-overlay ul {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.vm-overlay ul {
+  padding-left: 18px;
+}
+
+.vm-overlay li {
+  margin-bottom: 6px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .vm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vm-card img {
+    height: 300px;
+  }
+}

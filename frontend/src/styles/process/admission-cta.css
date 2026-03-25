@@ -1,0 +1,92 @@
+.admission-cta {
+  padding: 2.5rem 1rem; /* reduced top/bottom padding */
+  background: #ffffff; /* keep it light and clean */
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  text-align: center;
+}
+
+/* HEADING */
+.admission-cta h2 {
+  font-size: 2rem; /* smaller heading */
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.3rem; /* less space below heading */
+}
+
+/* SUBTITLE */
+.cta-subtitle {
+  font-size: 0.95rem; /* smaller text */
+  color: #475569;
+  margin-bottom: 1.5rem; /* tighter spacing */
+}
+
+/* CONTACT INFO */
+.cta-contact {
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem; /* reduce gap between items */
+  flex-wrap: wrap;
+  margin-bottom: 1.8rem; /* reduce bottom spacing */
+}
+
+.cta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem; /* smaller text */
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem; /* compact padding */
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.cta-item svg {
+  color: rgb(163, 21, 58);
+  font-size: 1rem; /* smaller icon */
+}
+
+.cta-item:hover {
+  background: rgba(15, 23, 42, 0.03);
+  transform: translateY(-1px);
+}
+
+/* BUTTON */
+.apply-now-btn {
+  background: rgb(163, 21, 58);
+  color: #ffffff;
+  border: none;
+  padding: 0.55rem 1.8rem; /* smaller button */
+  font-size: 0.95rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.apply-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(163, 21, 58, 0.2);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .admission-cta h2 {
+    font-size: 1.7rem;
+  }
+
+  .cta-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .cta-contact {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .apply-now-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

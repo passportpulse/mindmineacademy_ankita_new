@@ -1,0 +1,290 @@
+/* Container */
+.apply-form-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8rem 0 4rem 0;
+}
+
+.apply-form-card {
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 0; /* remove default padding, header handles top padding */
+}
+
+/* Header */
+.form-header {
+  background-color: rgb(163, 21, 58); /* Maroon */
+  color: #fff;
+  padding: 20px 25px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.form-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.form-header .form-info {
+  margin: 5px 0 0 0;
+  font-size: 0.85rem;
+  white-space: nowrap; /* Keep all in one line */
+  overflow-x: auto; /* horizontal scroll if too long */
+}
+
+/* Form inside card */
+form {
+  padding: 25px;
+}
+
+/* Section Titles */
+h2 {
+  font-size: 1rem;
+  color: #48502c;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  /* border-bottom: 1px solid #eee; */
+  padding-bottom: 3px;
+}
+
+/* Form Grid */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+/* Form Fields */
+label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #555;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgb(163, 21, 58);
+  box-shadow: 0 0 3px rgba(163, 21, 58, 0.3);
+}
+.submit-btn {
+  background-color: rgb(163, 21, 58);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+/* Container for buttons */
+.form-buttons {
+  display: flex;
+  justify-content: center;    /* center horizontally */
+  align-items: center;        /* center vertically */
+  gap: 12px;                  /* space between Back and Submit */
+  margin-top: 25px;
+  flex-wrap: wrap;            /* stack on smaller screens */
+}
+
+/* Common button styles */
+.form-buttons button {
+  display: flex;
+  align-items: center;        /* vertical center of text */
+  justify-content: center;    /* horizontal center */
+  height: 42px;               /* fixed height for alignment */
+  line-height: 1;             /* text vertical alignment */
+  padding: 0 22px;            /* horizontal padding only */
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;           /* ensures consistent width */
+  box-sizing: border-box;     /* include border/padding in height */
+}
+
+/* Back Button */
+.apply-back-btn {
+  background-color: #f5f5f5;  /* light gray background */
+  color: #333;
+  border: 1px solid #ccc;
+  font-weight: 500;
+}
+
+.apply-back-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #999;
+  transform: translateY(-1px);
+}
+
+/* Submit Button */
+.apply-submit-btn {
+  background-color: rgb(163, 21, 58);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.apply-submit-btn:hover {
+  background-color: #b91f48;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled Submit */
+.apply-submit-btn:disabled {
+  background-color: #a53b60;
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+/* Optional: Responsive - stack buttons on mobile */
+@media (max-width: 500px) {
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .form-buttons button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .form-group.full-width {
+    grid-template-columns: 1fr;
+    grid-column: span 1;
+  }
+  .form-header .form-info {
+    white-space: normal; /* wrap on small screens */
+  }
+}
+.success-box {
+  max-width: 600px;
+  margin: 50px auto !important;
+  padding: 40px 30px;
+  text-align: center;
+  background: #f0fff4;
+  border: 2px solid #38a169;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.4s ease;
+}
+
+.success-box h2 {
+  color: #2f855a;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.success-box p {
+  font-size: 16px;
+  margin: 6px 0;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.error-box {
+  text-align: center;
+  padding: 40px;
+  border: 2px solid #ef4444;
+  border-radius: 14px;
+  background: #fef2f2;
+  color: #7f1d1d;
+  margin-top: 20px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.error-box h2 {
+  color: #dc2626;
+  margin-bottom: 8px;
+}
+
+.error-box p {
+  font-size: 16px;
+}
+
+.error-box button {
+  margin-top: 16px;
+  padding: 10px 22px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.error-box button:hover {
+  background: #dc2626;
+}
+
+/* smooth entry */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.success-box {
+  text-align: center;
+  padding: 40px;
+}
+
+.tracking-box {
+  margin: 20px 0;
+  font-size: 1.1rem;
+  background: #f5f7ff;
+  padding: 12px;
+  border-radius: 8px;
+}

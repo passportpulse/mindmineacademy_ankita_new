@@ -1,0 +1,150 @@
+/* ===============================
+   MOCK TEST PAGE
+================================ */
+
+.mocktest-section {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== TITLES ===== */
+
+.mocktest-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  margin: 3.5rem 0 1.8rem;
+}
+
+/* ===============================
+   MAIN PRACTICE
+================================ */
+
+.mocktest-main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.mocktest-main-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.mocktest-main-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, rgb(163, 21, 58), #0a1f38);
+  border-radius: 18px 18px 0 0;
+}
+
+.mocktest-main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.mocktest-main-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.6rem;
+}
+
+.mocktest-main-card p {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* ===============================
+   MOCK TEST GRID
+================================ */
+
+.mocktest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.6rem;
+}
+
+.mocktest-card {
+  background: #f8fafc;
+  padding: 1.8rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.mocktest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+}
+
+/* ===============================
+   FEATURES
+================================ */
+
+.mocktest-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.mocktest-feature-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mocktest-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.mocktest-feature-card h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+}
+
+.mocktest-feature-card p {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .mocktest-title {
+    font-size: 1.7rem;
+  }
+
+  .mocktest-section {
+    padding: 3.5rem 1rem 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mocktest-title {
+    font-size: 1.5rem;
+  }
+}

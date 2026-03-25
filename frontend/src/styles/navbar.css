@@ -1,0 +1,237 @@
+/* ================= NAVBAR ================= */
+
+.navbar-custom {
+  background-color: #fff;
+  padding: 0.5rem 0;
+  box-shadow: 0 1.5px 1.5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+/* Layout: logo left, menu right */
+.navbar-custom .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+/* ================= BRAND ================= */
+
+.navbar-custom .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.navbar-custom .brand-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.navbar-custom .brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-custom .brand-mindmine {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: oklch(0.21 0.034 264.665);
+}
+
+.navbar-custom .brand-academy {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgb(163, 21, 58);
+}
+
+/* ================= NAV LIST ================= */
+
+.navbar-custom .navbar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;        /* equal spacing everywhere */
+  margin-left: auto; /* push menu right */
+}
+
+/* ================= LINKS ================= */
+
+.navbar-custom .nav-link {
+  color: oklch(37.3% 0.034 259.733);
+  font-weight: 400;
+  font-size: 0.85rem;
+  position: relative;
+  transition: color 0.3s;
+  padding: 6px 10px;
+}
+
+.navbar-custom .nav-link:hover {
+  color: rgb(163, 21, 58);
+}
+
+.navbar-custom .nav-link.active-link:not(.apply-btn) {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  font-weight: 600;
+  color: rgb(163, 21, 58);
+}
+
+/* ================= APPLY BUTTON ================= */
+
+.navbar-custom .apply-btn {
+  padding: 0.4rem 1.5rem;
+  background: linear-gradient(90deg, rgb(163, 21, 58), #330014);
+  color: #fff !important;
+  border-radius: 4rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  transition: all 0.4s ease;
+}
+
+.navbar-custom .apply-btn:hover {
+  opacity: 0.85;
+}
+
+/* ================= DROPDOWN ================= */
+
+.custom-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.custom-dropdown-toggle {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #212529;
+  transition: color 0.2s;
+  padding: 6px 10px;
+}
+
+.custom-dropdown-toggle:hover {
+  color: rgb(163, 21, 58);
+}
+
+.active-parent {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  font-weight: 600;
+  color: rgb(163, 21, 58);
+}
+
+/* Dropdown arrow */
+
+.dropdown-arrow {
+  margin-left: 0.3rem;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgb(163, 21, 58);
+  transition: transform 0.3s ease;
+}
+
+.custom-dropdown-toggle.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* ================= DROPDOWN MENU ================= */
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 999;
+  list-style: none;
+}
+
+.custom-dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Dropdown items */
+
+.custom-dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.custom-dropdown-item:hover {
+  background-color: rgba(163, 21, 58, 0.08);
+  color: rgb(163, 21, 58);
+}
+
+/* ================= SUB DROPDOWN ================= */
+
+/* Nested sub-dropdown */
+.custom-dropdown-sub {
+  position: relative;
+}
+
+/* Nested menu */
+.sub-dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 160px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  transform: translateX(10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 999;
+  list-style: none;
+}
+
+/* Show nested menu */
+.custom-dropdown-sub.open > .sub-dropdown-menu {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Right-angled triangle arrow */
+.custom-dropdown-sub > .custom-dropdown-item .dropdown-arrow {
+  display: inline-block;
+  margin-left: 0.3rem;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid rgb(163, 21, 58); /* right-pointing triangle */
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+/* Rotate 90deg down when open */
+.custom-dropdown-sub.open > .custom-dropdown-item .dropdown-arrow {
+  transform: rotate(90deg);
+}

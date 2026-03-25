@@ -1,0 +1,148 @@
+.campus-section {
+  padding: 4rem 0;
+  background: #f9fafb;
+}
+
+.campus-section .container .section-title {
+  text-align: center;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.75rem;
+}
+
+.campus-section .container .section-subtitle {
+  color: #555c6e;
+  font-size: 0.85rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.campus-grid {
+  display: flex;
+  flex-wrap: wrap;         /* allow items to go to next line */
+  gap: 28px;               /* space between items */
+  justify-content: center; /* center items horizontally */
+  margin-bottom: 2rem;
+}
+
+.campus-grid > * {
+  flex: 0 1 300px;         /* item width: max 300px, shrinkable */
+}
+
+/* Responsive adjustments (optional) */
+@media (max-width: 992px) {
+  .campus-grid > * {
+    flex: 0 1 45%;          /* 2 per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .campus-grid > * {
+    flex: 0 1 90%;          /* 1 per row on small screens */
+  }
+}
+
+.campus-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.campus-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* Highlight last card */
+.campus-highlight {
+  border: 1px solid #0a1f38; /* dark blue border */
+  box-shadow: 0 18px 40px rgba(10, 31, 56, 0.35); /* dark blue shadow */
+}
+
+.campus-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.campus-sub .campus-tag {
+  background: rgba(230, 198, 206, 0.15);
+  color: #a31b3a;
+}
+
+.campus-regional .campus-tag {
+  background: rgba(183, 190, 210, 0.12);
+  color: #1f3c88;
+}
+
+.campus-highlight .campus-tag {
+  background: rgba(160, 199, 175, 0.15);
+  color: #15803d;
+}
+
+.campus-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+}
+
+.campus-address,
+.campus-phone {
+  font-size: 0.95rem;
+  color: #555c6e;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.campus-map {
+  margin: 18px 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.campus-map iframe {
+  width: 100%;
+  height: 180px;
+  border: 0;
+}
+
+.map-btn {
+  margin-top: auto;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0a1f38, #122d50);
+
+  text-decoration: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.map-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.map-btn:hover {
+  opacity: 0.9;
+}

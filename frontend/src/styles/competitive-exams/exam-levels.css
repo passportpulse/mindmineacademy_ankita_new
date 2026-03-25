@@ -1,0 +1,152 @@
+/* SECTION */
+
+.exam-level-section {
+  padding: 5rem 0;
+  background: linear-gradient(to bottom, #ffffff, rgba(37, 99, 235, 0.03));
+}
+
+.exam-level-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1rem;
+}
+
+/* HEADER */
+
+.exam-level-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.exam-level-icon {
+  width: 48px;
+  height: 48px;
+  color: rgb(163, 21, 58);
+  margin-bottom: 1rem;
+}
+
+.exam-level-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.exam-level-divider {
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: linear-gradient(90deg, #0a1f38, rgb(163, 21, 58));
+  margin: 1rem auto 0;
+  border-radius: 10px;
+}
+
+/* CARD */
+
+.exam-level-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-bottom: 2.8rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exam-level-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+/* CARD HEADER */
+
+.exam-level-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exam-level-card-header h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* DURATION */
+
+.exam-level-duration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1e293b;
+  background: rgba(37, 99, 235, 0.08);
+  padding: 6px 14px;
+  border-radius: 30px;
+}
+
+.exam-level-clock {
+  color: #0a1f38;
+}
+
+/* DESCRIPTION */
+
+.exam-level-description {
+  margin: 1.2rem 0 1.6rem;
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* GRID */
+
+.exam-level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* BOX */
+
+.exam-level-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(37, 99, 235, 0.08);
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.exam-level-box:hover {
+  background: rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ICON */
+
+.exam-level-tick {
+  color: rgb(163, 21, 58);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .exam-level-section {
+    padding: 3.5rem 0;
+  }
+
+  .exam-level-title {
+    font-size: 2rem;
+  }
+
+  .exam-level-card-header h3 {
+    font-size: 1.4rem;
+  }
+
+  .exam-level-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

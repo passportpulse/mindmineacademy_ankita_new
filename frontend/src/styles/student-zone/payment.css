@@ -1,0 +1,43 @@
+.payment-section {
+  background: #f0f0f0;
+  padding: 8rem 0 4rem 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 3.4rem;
+}
+
+.payment-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.payment-card h2 {
+  color: rgb(163,21,58);
+  margin-bottom: 10px;
+}
+
+.payment-card p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.payment-btn {
+  padding: 12px 20px;
+  background: rgb(163,21,58);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.payment-btn:hover {
+  background: #b91f48;
+}

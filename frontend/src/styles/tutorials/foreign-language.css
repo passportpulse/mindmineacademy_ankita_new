@@ -1,0 +1,169 @@
+/* ===============================
+   FOREIGN LANGUAGE PAGE STYLES
+================================ */
+
+.language-section {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== SECTION TITLES ===== */
+
+.language-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 3.5rem 0 1.8rem;
+  text-align: center;
+}
+
+/* ===============================
+   MAIN PROGRAMS
+================================ */
+
+.language-main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.language-main-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.language-main-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, rgb(163, 21, 58), #0a1f38);
+  border-radius: 18px 18px 0 0;
+}
+
+.language-main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.language-main-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: #0f172a;
+}
+
+.language-main-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+/* ===============================
+   FOREIGN LANGUAGE GRID
+================================ */
+
+.language-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.8rem;
+}
+
+.language-card {
+  background: #ffffff;
+  padding: 1.7rem 1.6rem;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  overflow: hidden;
+}
+
+.language-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, rgb(163, 21, 58), #0a1f38);
+  border-radius: 16px 16px 0 0;
+}
+
+.language-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.language-card h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.language-card p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+/* ===============================
+   CERTIFICATION SECTION
+================================ */
+
+.language-cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.language-cert-card {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  font-weight: 600;
+  color: #0f172a;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.language-cert-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+}
+
+.language-cert-card h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .language-title {
+    font-size: 1.7rem;
+  }
+
+  .language-section {
+    padding: 3.5rem 1rem 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .language-title {
+    font-size: 1.5rem;
+  }
+}

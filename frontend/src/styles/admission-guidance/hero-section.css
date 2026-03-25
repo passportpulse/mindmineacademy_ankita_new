@@ -1,0 +1,85 @@
+/* ================= Hero ================= */
+.admission-hero {
+  background: linear-gradient(135deg, rgb(12, 35, 64), #020617); /* dark navy */
+  color: #ffffff;
+  padding: 8rem 1.5rem 4rem 1.5rem;
+  text-align: center;
+}
+
+.admission-hero .hero-heading {
+  font-weight: 900;
+  font-size: 2.6rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.admission-hero .hero-text {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #e5e7eb;
+}
+
+/* ================= Filters ================= */
+.hero-filters {
+  margin-top: 2rem;
+  padding-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Filter Button */
+.hero-filters .filter-btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+
+  color: #334155;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.hero-filters .filter-btn:hover {
+  background-color: #0b1d33;
+  color: #ffffff;
+  border-color: #0b1d33;
+}
+
+/* Active */
+.hero-filters .filter-btn.active {
+  background-color: rgb(163, 21, 58);
+  color: #ffffff;
+  border-color: #ec4899;
+}
+
+/* Active hover (no flicker) */
+.hero-filters .filter-btn.active:hover {
+  background-color: rgb(159, 21, 58);
+  border-color: rgb(126, 16, 45);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 640px) {
+  .admission-hero .hero-heading {
+    font-size: 2.1rem;
+  }
+
+  .hero-filters {
+    gap: 10px;
+  }
+
+  .hero-filters .filter-btn {
+    padding: 9px 18px;
+    font-size: 0.75rem;
+  }
+}

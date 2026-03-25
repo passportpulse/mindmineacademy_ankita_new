@@ -1,0 +1,132 @@
+/* Wrapper */
+.tugpg-section {
+  padding: 4rem 0.5rem;
+  background: #ffffff;
+}
+
+/* Heading */
+.tugpg-heading {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.tugpg-subtext {
+  text-align: center;
+  max-width: 720px;
+  margin: 10px auto 50px;
+  color: #6b7280;
+}
+
+/* Blocks */
+.tugpg-wrapper {
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.tugpg-block {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Level Badge */
+.tugpg-level {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-left: 14px;
+  border-left: 5px solid #2563eb;
+  color: #111827;
+}
+
+.tugpg-level.pg {
+  border-color: #059669;
+}
+
+/* Categories */
+.tugpg-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Category Card */
+.tugpg-category-card {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.tugpg-category-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+/* Courses */
+.tugpg-courses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tugpg-course-pill {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #374151;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.tugpg-course-pill:hover {
+  background: rgb(12, 35, 64);
+  color: #fff;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tugpg-heading {
+    font-size: 1.8rem;
+  }
+}
+.tugpg-eligibility-pill {
+  display: inline-flex;           /* keeps content in one line & adjusts width */
+  align-items: center;            /* vertically center text/icon */
+  padding: 0.35rem 0.8rem;        /* vertical + horizontal padding */
+  border-radius: 50px;            /* pill shape */
+  background: #e0f2fe;            /* light blue */
+  color: #0369a1;                 /* text color */
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.3px;
+  white-space: nowrap;            /* prevent wrapping */
+  max-width: max-content;         /* ensures width only fits content */
+  box-sizing: border-box;         /* padding included in width */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect */
+.tugpg-eligibility-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode */
+.tugpg-block.dark .tugpg-eligibility-pill {
+  background: #1e293b;
+  color: #38bdf8;
+}
+.eligibility-label {
+  margin-right: 0.4rem; /* space after colon */
+}
+

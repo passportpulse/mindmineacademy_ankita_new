@@ -1,0 +1,102 @@
+/* Main section */
+.notices-section {
+  padding: 80px 20px;
+  max-width: 900px;
+  margin-block:rem;
+  margin: auto;
+}
+
+/* Theme background */
+.blackboard {
+  /* background: linear-gradient(145deg, #081a33, #0d254a); */
+  border-radius: 14px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  margin-block: 8rem 4rem;
+}
+
+/* Heading */
+.notice-heading {
+  text-align: center;
+  color: rgb(163,21,58);
+  font-size: 28px;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+/* Notice list */
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Notice card */
+.notice-item {
+  background: #0f2b55;
+  padding: 15px 18px;
+  border-radius: 10px;
+  border-left: 5px solid rgb(163,21,58);
+  transition: all 0.25s ease;
+}
+
+.notice-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+}
+
+/* Title row */
+.notice-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: #eaf0ff;
+}
+
+.notice-title strong {
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+
+/* Date */
+.date {
+  font-size: 13px;
+  color: #b8c7ff;
+  white-space: nowrap;
+}
+
+/* Description */
+.notice-description {
+  margin-top: 12px;
+  color: #dbe4ff;
+  line-height: 1.6;
+  font-size: 15px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 10px;
+}
+
+/* Empty text */
+.notices-section p {
+  text-align: center;
+  color: #b8c7ff;
+  font-size: 16px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .notice-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notice-heading {
+    font-size: 22px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+}

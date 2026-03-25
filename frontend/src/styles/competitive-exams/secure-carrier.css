@@ -1,0 +1,86 @@
+/* ================= Secure Career Section ================= */
+.secure-career-section {
+  padding: 2rem 0 4rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.secure-career-section .secure-card {
+  background:
+    radial-gradient(rgba(156, 163, 175, 0.25) 1px, transparent 1px),
+    linear-gradient(135deg, #0a1f38, #0a1f38); /* ultra dark blue */
+
+  background-size: 22px 22px; /* dot spacing */
+  background-repeat: repeat;
+
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  max-width: 50rem;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.6);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #ffffff;
+}
+
+.secure-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.scholar-image {
+  font-size: 3rem;
+  color: rgb(163, 21, 58); /* magenta icon */
+  margin-bottom: 1rem;
+}
+
+.secure-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff; /* heading white */
+}
+
+.secure-text p {
+  font-size: 1rem;
+  color: #e5e7eb; /* light gray text on dark bg */
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.secure-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.apply-btn,
+.contact-btn {
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secure-buttons .apply-btn {
+  background: linear-gradient(90deg, rgb(163, 21, 58), #330014);
+  color: #fff !important;
+}
+
+.apply-btn:hover {
+  background-color: #be185d; /* darker magenta on hover */
+}
+
+.contact-btn {
+  background-color: #ffffff; /* white button */
+  color: #0a1f38; /* dark blue text */
+}
+
+.contact-btn:hover {
+  background-color: #e5e7eb; /* light gray hover */
+}

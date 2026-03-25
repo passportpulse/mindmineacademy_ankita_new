@@ -1,0 +1,31 @@
+/* ================= Hero ================= */
+.apply-now-hero {
+  background: linear-gradient(135deg, rgb(12, 35, 64), #020617); /* dark navy */
+  color: #ffffff;
+  padding: 8rem 1.5rem 4rem 1.5rem;
+  text-align: center;
+}
+
+.apply-now-hero .hero-heading {
+  font-weight: 900;
+  font-size: 2.6rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.apply-now-hero .hero-text {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #e5e7eb;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 640px) {
+  .apply-now-hero .hero-heading {
+    font-size: 2.1rem;
+  }
+
+}

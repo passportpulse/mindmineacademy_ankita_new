@@ -1,0 +1,149 @@
+/* ===============================
+   GENERAL STUDIES PAGE
+================================ */
+
+.gs-section {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== TITLES ===== */
+
+.gs-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  margin: 3.5rem 0 1.8rem;
+}
+
+/* ===============================
+   CORE SUBJECTS
+================================ */
+
+.gs-main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.gs-main-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.gs-main-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, rgb(163, 21, 58), #0a1f38);
+  border-radius: 18px 18px 0 0;
+}
+
+.gs-main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.gs-main-card h3 {
+  font-size: 1.3rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.gs-main-card p {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ===============================
+   EXAM GRID
+================================ */
+
+.gs-exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.6rem;
+}
+
+.gs-exam-card {
+  background: #f8fafc;
+  padding: 1.8rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.gs-exam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+}
+
+/* ===============================
+   SKILLS
+================================ */
+
+.gs-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.gs-skill-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gs-skill-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.gs-skill-card h4 {
+  font-size: 1.25rem;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
+}
+
+.gs-skill-card p {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .gs-title {
+    font-size: 1.7rem;
+  }
+
+  .gs-section {
+    padding: 3.5rem 1rem 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gs-title {
+    font-size: 1.5rem;
+  }
+}

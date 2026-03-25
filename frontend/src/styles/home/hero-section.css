@@ -1,0 +1,267 @@
+/* ===============================
+   HERO SECTION
+================================ */
+.home-hero-section
+ {
+  background: linear-gradient(to right, #ffffff, #faecf6);
+  padding: 8rem 0 4rem 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ===============================
+   CONTAINER
+================================ */
+.hero-container {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+
+
+/* ===============================
+   LEFT CONTENT
+================================ */
+.hero-left {
+  flex: 1.2;   /* text gets more room */
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #a31b3a;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.hero-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #292929;
+  margin-bottom: 20px;
+}
+
+.hero-title span {
+  background: linear-gradient(to right, #a31b3a, #161f42);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2.2rem;
+}
+
+.hero-description {
+  font-size: 0.8rem;
+  color: #444;
+  max-width: 27rem;
+  margin-bottom: 30px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.get-admission-btn {
+  background: linear-gradient(135deg, rgb(163, 21, 58), #330014);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.65rem 1.6rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(163, 21, 58, 0.35);
+  transition: all 0.35s ease;
+}
+
+.get-admission-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(163, 21, 58, 0.45);
+}
+
+.explore-courses-btn {
+  background: #ffffff;
+  color: #330014;
+  border: 1px solid #67012a;
+  border-radius: 0.5rem;
+  padding: 0.65rem 1.6rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(163, 21, 58, 0.12);
+  transition: all 0.35s ease;
+}
+
+.explore-courses-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(163, 21, 58, 0.35);
+}
+
+/* ===============================
+   RIGHT IMAGE
+================================ */
+.hero-right {
+  flex: 0.8;   /* image gets less room */
+  display: flex;
+  justify-content: flex-end;
+}
+.hero-right img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 2rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+}
+
+/* ===============================
+   STATS
+================================ */
+.hero-stats {
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  text-align: center;
+}
+
+.stat h2 {
+  color: #353535;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.stat p {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* ===============================
+   ANIMATIONS
+================================ */
+.animate-text {
+  animation: slideInLeft 1s ease-out forwards;
+}
+
+.animate-image {
+  animation: zoomIn 1.1s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===============================
+   RESPONSIVE (MOBILE + TABLET)
+================================ */
+@media (max-width: 900px) {
+  .home-hero-section
+ {
+    padding: 60px 0%;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-left,
+  .hero-right {
+    width: 100%;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    max-width: 100%;
+    margin: 0 auto 30px;
+  }
+
+  .hero-buttons {
+    flex-direction: row;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .get-admission-btn,
+  .explore-courses-btn {
+    width: 40%;
+  }
+
+  .hero-right {
+    margin-top: 32px;
+  }
+
+  .hero-right img {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .animate-image {
+    animation: none;
+  }
+}
+
+/* ===============================
+   LARGE SCREENS
+================================ */
+@media (min-width: 1440px) {
+  .hero-container {
+    max-width: 1600px;
+  }
+
+  .hero-title {
+    font-size: 3.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: 38rem;
+  }
+
+  .hero-right img {
+    max-width: 600px;
+  }
+
+  .hero-stats {
+    gap: 140px;
+  }
+}

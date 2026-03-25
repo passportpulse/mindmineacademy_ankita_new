@@ -1,0 +1,120 @@
+/* ================= CONTACT SECTION ================= */
+
+.contact-section {
+  background: #f8f9fc;
+}
+
+.contact-section .container {
+  display: flex;
+  gap: 2rem;
+  padding: 4rem 3.5rem;
+  align-items: stretch; /* 🔥 equal height columns */
+}
+/* FORCE left & right to follow tallest height */
+.contact-left,
+.contact-right {
+  align-self: stretch;
+}
+/* ================= LEFT SIDE ================= */
+
+.contact-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap:1rem
+}
+
+.contact-card {
+  background: #fff;
+  padding: 1.8rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border-left: 5px solid #a3153a;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card .icon {
+  font-size: 2rem;
+  color: #fff;
+  background: #a3153a;
+  padding: 0.6rem;
+  border-radius: 50%;
+  margin-bottom: 0.8rem;
+}
+
+.contact-card h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.contact-card p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ================= RIGHT SIDE ================= */
+
+.contact-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stretch Enquiry component to match height */
+.contact-right > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.contact-right .enquiry-section {
+  padding: 0;
+  background: transparent;
+}
+.contact-right .enquiry-card {
+  padding: 1rem 0.8rem;
+}
+
+/* If form is long → scroll nicely */
+.contact-right {
+  overflow-y: auto;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+  .contact-section .container {
+    flex-direction: column;
+    padding: 3rem 2rem;
+  }
+
+  .contact-right {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-card .icon {
+    font-size: 1.6rem;
+  }
+
+  .contact-card h4 {
+    font-size: 0.95rem;
+  }
+
+  .contact-card p {
+    font-size: 0.85rem;
+  }
+}
