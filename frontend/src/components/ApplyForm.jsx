@@ -236,7 +236,7 @@ export default function ApplyForm() {
                     Select Campus *
                   </option>
                   <option value="Moulali">Moulali</option>
-                  <option value="Thakurpur">Thakurpur</option>
+                  <option value="Thakurpukur">Thakurpukur</option>
                 </select>
 
                 <select
