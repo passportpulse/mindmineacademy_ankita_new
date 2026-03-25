@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/enquiry.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_BASE_URL } from "../../src/config/api";
 
 export default function Enquiry() {
   const [formData, setFormData] = useState({
@@ -34,7 +35,6 @@ export default function Enquiry() {
   };
 
   const handleSubmit = async (e) => {
-    // console.log(formData);
     e.preventDefault();
 
     if (
@@ -49,25 +49,23 @@ export default function Enquiry() {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast.error("Enter a valid email address");
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+      const res = await fetch(`${API_BASE_URL}/api/enquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          fullName: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          lastQualification: formData.lastQualification,
+          courseEnquiry: formData.course,
+          message: formData.message,
+        }),
+      });
 
       const data = await res.json();
 
@@ -89,8 +87,9 @@ export default function Enquiry() {
 
       setShowOtherInput(false);
     } catch (err) {
-      // console.error(err);
       toast.error(err.message || "Failed to send enquiry");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,7 +101,9 @@ export default function Enquiry() {
             <div className="success-box">
               <h2>Thank You!</h2>
               <p>Your enquiry has been sent successfully.</p>
-              <p><strong>Check your inbox or spam folder for our confirmation email.</strong></p>
+              <p>
+                <strong>We will get back to you soon.</strong>
+              </p>
             </div>
           )}
 

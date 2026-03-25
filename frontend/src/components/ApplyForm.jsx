@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/form.css";
+import { API_BASE_URL } from "../../src/config/api";
 
 export default function ApplyForm() {
   const statesAndUTs = [
@@ -162,14 +163,11 @@ export default function ApplyForm() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        },
-      );
+      const res = await fetch(`${API_BASE_URL}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       const data = await res.json();
 

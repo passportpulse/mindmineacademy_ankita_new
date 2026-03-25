@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  "";
+  "https://mindmineacademy-ankita-new.onrender.com";
 
 export const getAdminHeaders = () => ({
   "Content-Type": "application/json",

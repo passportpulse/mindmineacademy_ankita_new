@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/student-zone/check-status.css";
-
-const API = "";
+import { API_BASE_URL } from "../../config/api";
 
 export default function CheckStatus() {
   const [trackingId, setTrackingId] = useState("");
@@ -18,13 +17,16 @@ export default function CheckStatus() {
     setError("");
 
     try {
-      const res = await fetch(`${API}/api/application/status/${trackingId}`);
+      const res = await fetch(
+        `${API_BASE_URL}/api/applications/status/${trackingId}`,
+      );
+
       const data = await res.json();
 
       if (!res.ok) {
         setError(data.message || "Invalid Tracking ID");
       } else {
-        setStatus(data.status);
+        setStatus(data.data.status);
       }
     } catch (err) {
       console.error("Check status error", err);
