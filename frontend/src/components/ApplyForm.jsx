@@ -185,21 +185,23 @@ export default function ApplyForm() {
   // ---------------------- SUCCESS PAGE ----------------------
   if (submitted) {
     return (
-      <div className="apply-form-container">
-        <div className="apply-form-card success-box">
+      <div class="apply-form-container">
+        <div class="apply-form-card success-box">
           <h2>🎉 Application Submitted Successfully!</h2>
           <p>Thank you for applying to Mindmine Academy.</p>
 
-          <div className="tracking-box">
+          <div class="tracking-box">
             <strong>Your Tracking ID:</strong>
             <span>{trackingId}</span>
           </div>
 
-          <p>A confirmation email has been sent 📩</p>
+          <p class="important-note">
+            ⚠️ <strong>Important:</strong> Please save your Tracking ID safely.
+          </p>
+
           <p>
-            <strong>
-              Check your inbox or spam folder for our confirmation email.
-            </strong>
+            You will need this Tracking ID to check your application status
+            later.
           </p>
         </div>
       </div>
@@ -243,7 +245,9 @@ export default function ApplyForm() {
                   value={formData.course}
                   onChange={handleChange}
                 >
-                  <option disabled value="">Select Course *</option>
+                  <option disabled value="">
+                    Select Course *
+                  </option>
                   {courses.map((c) => (
                     <option
                       key={c.slug}

@@ -43,6 +43,7 @@ const applicationSchema = new mongoose.Schema(
     state: { type: String, required: true },
     pin: {
       type: String,
+      required: true,
       match: [/^\d{6}$/, "PIN must be 6 digits"],
     },
 
@@ -65,12 +66,20 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       match: [/^\d{10}$/, "Invalid father phone"],
     },
+    fatherOccupation: { type: String },
 
     motherName: { type: String },
     motherPhone: {
       type: String,
       match: [/^\d{10}$/, "Invalid mother phone"],
     },
+    motherOccupation: { type: String },
+
+    guardianName: { type: String },
+    guardianRelation: {
+      type: String,
+    },
+    guardianPhone: { type: String },
 
     // Academic
     lastQualification: { type: String, required: true },
@@ -78,6 +87,8 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       match: [/^\d{4}$/, "Year must be 4 digits"],
     },
+    previousCourse: { type: String },
+    previousInstitute: { type: String },
     percentage: {
       type: Number,
       min: 0,
@@ -91,7 +102,7 @@ const applicationSchema = new mongoose.Schema(
       default: "pending",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Application", applicationSchema);
