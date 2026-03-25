@@ -26,7 +26,9 @@ const Dashboard = () => {
     const stats = {};
 
     branches.forEach((branch) => {
-      const filtered = apps.filter((a) => a.campusInfo?.campus === branch.name);
+      const filtered = apps.filter(
+        (a) => a.campus === branch.name.replace(" Campus", ""),
+      );
 
       stats[branch.key] = {
         total: filtered.length,
@@ -52,15 +54,16 @@ const Dashboard = () => {
       }
 
       const [res, enqRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/applications`, {
+        fetch(`${API_BASE_URL}/api/applications`, {
           headers: getAdminHeaders(),
         }),
-        fetch(`${API_BASE_URL}/enquiries`, {
+        fetch(`${API_BASE_URL}/api/enquiries`, {
           headers: getAdminHeaders(),
         }),
       ]);
 
       const data = await res.json();
+      console.log("API RESPONSE:", data);
       const apps = data.data || [];
       const enqData = await enqRes.json();
 
