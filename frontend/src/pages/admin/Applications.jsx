@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_BASE_URL, getAdminHeaders } from "../../config/api";
-import { useSearchParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const Applications = () => {
   const [apps, setApps] = useState([]);
@@ -13,13 +12,13 @@ const Applications = () => {
 
   const [searchParams] = useSearchParams();
   const branch = searchParams.get("branch");
-
   const navigate = useNavigate();
 
   const fetchApps = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/applications`, {
+      // FIXED: Restored the /api/ prefix to match your backend route
+      const res = await fetch(`${API_BASE_URL}/api/applications`, {
         headers: getAdminHeaders(),
       });
       const data = await res.json();
@@ -36,7 +35,7 @@ const Applications = () => {
   }, [branch]);
 
   const filteredApps = branch
-    ? apps.filter((app) => app.campusInfo.campus === branch)
+    ? apps.filter((app) => app.campus === branch)
     : apps;
 
   const toggleExpand = (id) => {
@@ -53,7 +52,8 @@ const Applications = () => {
       return;
     }
     try {
-      await fetch(`${API_BASE_URL}/applications/${id}`, {
+      // FIXED: Restored /api/ here as well
+      await fetch(`${API_BASE_URL}/api/applications/${id}`, {
         method: "PATCH",
         headers: getAdminHeaders(),
         body: JSON.stringify({ status }),
@@ -66,7 +66,8 @@ const Applications = () => {
 
   const submitFees = async (id) => {
     try {
-      await fetch(`${API_BASE_URL}/applications/${id}`, {
+      // FIXED: Restored /api/ here as well
+      await fetch(`${API_BASE_URL}/api/applications/${id}`, {
         method: "PATCH",
         headers: getAdminHeaders(),
         body: JSON.stringify({
@@ -75,7 +76,6 @@ const Applications = () => {
           applicationId: applicationIdValue,
         }),
       });
-
       setFeeInputId(null);
       setFeeValue("");
       setApplicationIdValue("");
@@ -87,362 +87,169 @@ const Applications = () => {
 
   const getStatusClass = (status) => {
     switch (status) {
-      case "approved": return "status-approved";
-      case "rejected": return "status-rejected";
-      default: return "status-pending";
+      case "approved":
+        return "status-approved";
+      case "rejected":
+        return "status-rejected";
+      default:
+        return "status-pending";
     }
   };
 
   return (
     <>
       <style>{`
-        .app-container {
-          padding: 32px 16px;
-          max-width: 1280px;
-          margin: 0 auto;
-          background-color: #f8fafc;
-          min-height: 100vh;
-          font-family: sans-serif;
-        }
-
-        .header-flex {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-          margin-bottom: 32px;
-        }
-
-        @media (min-width: 768px) {
-          .header-flex {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-          }
-        }
-
-        .header-left h2 {
-          font-size: 30px;
-          font-weight: 900;
-          color: #1e293b;
-          margin: 0;
-        }
-
-        .header-left .sub-text {
-          color: #64748b;
-          font-size: 14px;
-          margin: 4px 0 8px 0;
-        }
-
-        .branch-info h3 {
-          font-size: 18px;
-          font-weight: 700;
-          color: #334155;
-          margin: 0;
-        }
-
-        .branch-info p {
-          font-size: 12px;
-          color: #6b7280;
-          margin: 0;
-        }
-
-        .header-right {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .clear-btn {
-          padding: 8px 16px;
-          font-size: 12px;
-          font-weight: 700;
-          background-color: #eef2ff;
-          color: #4f46e5;
-          border: none;
-          border-radius: 12px;
-          cursor: pointer;
-          white-space: nowrap;
-        }
-
-        .total-count {
-          text-align: right;
-        }
-
-        .total-count span {
-          display: block;
-          font-size: 30px;
-          font-weight: 800;
-          color: #4f46e5;
-          line-height: 1;
-        }
-
-        .total-count p {
-          font-size: 10px;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-weight: 700;
-          color: #94a3b8;
-          margin: 4px 0 0 0;
-        }
-
-        .loading-state {
-          display: flex;
-          justify-content: center;
-          padding: 80px;
-          color: #94a3b8;
-          font-weight: 700;
-        }
-
-        .app-list {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-
-        .app-card {
-          background: #ffffff;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          border: 1px solid #e2e8f0;
-          border-radius: 24px;
-          overflow: hidden;
-        }
-
-        .card-summary {
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        @media (min-width: 768px) {
-          .card-summary {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-          }
-        }
-
-        .student-profile {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .profile-img-box {
-          width: 48px;
-          height: 48px;
-          border-radius: 16px;
-          background: #eef2ff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          border: 1px solid #e0e7ff;
-        }
-
-        .profile-img-box img {
-          width: 100%;
-          height: 100%;
-          object-cover: cover;
-        }
-
-        .student-name h3 {
-          font-weight: 700;
-          font-size: 18px;
-          color: #0f172a;
-          margin: 0;
-        }
-
-        .course-tag {
-          color: #4f46e5;
-          font-size: 12px;
-          font-weight: 700;
-          text-transform: uppercase;
-          margin-top: 4px;
-        }
-
-        .tracking-id {
-          font-size: 10px;
-          font-family: monospace;
-          color: #94a3b8;
-          margin: 4px 0 0 0;
-        }
-
-        .status-badges {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .badge-base {
-          padding: 4px 12px;
-          border-radius: 9999px;
-          border: 1px solid;
-          font-size: 10px;
-          font-weight: 900;
-          text-transform: uppercase;
-        }
-
+        .app-container { padding: 32px 16px; max-width: 1280px; margin: 0 auto; background-color: #f8fafc; min-height: 100vh; font-family: sans-serif; }
+        .header-flex { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+        @media (min-width: 768px) { .header-flex { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .header-left h2 { font-size: 30px; font-weight: 900; color: #1e293b; margin: 0; }
+        .header-left .sub-text { color: #64748b; font-size: 14px; margin: 4px 0 8px 0; }
+        .branch-info h3 { font-size: 18px; font-weight: 700; color: #334155; margin: 0; }
+        .branch-info p { font-size: 12px; color: #6b7280; margin: 0; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .clear-btn { padding: 8px 16px; font-size: 12px; font-weight: 700; background-color: #eef2ff; color: #4f46e5; border: none; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+        .total-count { text-align: right; }
+        .total-count span { display: block; font-size: 30px; font-weight: 800; color: #4f46e5; line-height: 1; }
+        .total-count p { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: #94a3b8; margin: 4px 0 0 0; }
+        .loading-state { display: flex; justify-content: center; padding: 80px; color: #94a3b8; font-weight: 700; }
+        .app-list { display: flex; flex-direction: column; gap: 24px; }
+        .app-card { background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; border-radius: 24px; overflow: hidden; }
+        .card-summary { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        @media (min-width: 768px) { .card-summary { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .student-profile { display: flex; align-items: center; gap: 16px; }
+        .profile-img-box { width: 54px; height: 54px; border-radius: 16px; background: #eef2ff; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #e0e7ff; }
+        .profile-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .student-name h3 { font-weight: 700; font-size: 18px; color: #0f172a; margin: 0; }
+        .course-tag { color: #4f46e5; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
+        .tracking-id { font-size: 10px; font-family: monospace; color: #94a3b8; margin: 4px 0 0 0; }
+        .status-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .badge-base { padding: 4px 12px; border-radius: 9999px; border: 1px solid; font-size: 10px; font-weight: 900; text-transform: uppercase; }
         .status-approved { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
         .status-rejected { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
         .status-pending { background: #fefce8; color: #a16207; border-color: #fef08a; }
-
-        .review-btn {
-          background: #f1f5f9;
-          color: #475569;
-          padding: 8px 16px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-weight: 700;
-          border: none;
-          cursor: pointer;
-        }
-
-        .detail-pane {
-          padding: 24px;
-          border-top: 1px solid #f8fafc;
-        }
-
-        .detail-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 32px;
-          padding: 24px 0;
-        }
-
+        .review-btn { background: #f1f5f9; color: #475569; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+        .detail-pane { padding: 24px; border-top: 1px solid #f8fafc; }
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 24px 0; }
         @media (min-width: 768px) { .detail-grid { grid-template-columns: 1fr 1fr; } }
         @media (min-width: 1024px) { .detail-grid { grid-template-columns: repeat(4, 1fr); } }
-
-        .detail-section h4 {
-          font-size: 10px;
-          font-weight: 900;
-          text-transform: uppercase;
-          color: #94a3b8;
-          letter-spacing: 0.2em;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 16px;
-        }
-
-        .section-number {
-          width: 16px;
-          height: 16px;
-          background: #1e293b;
-          color: white;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 8px;
-        }
-
-        .info-box {
-          background: #f8fafc;
-          padding: 12px;
-          border-radius: 16px;
-          font-size: 14px;
-        }
-
+        .detail-section h4 { font-size: 10px; font-weight: 900; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.2em; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+        .section-number { width: 16px; height: 16px; background: #1e293b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; }
+        .info-box { background: #f8fafc; padding: 12px; border-radius: 16px; font-size: 14px; }
         .info-box p, .detail-section p { margin: 4px 0; }
-
-        .parent-box {
-          padding: 8px;
-          border-radius: 12px;
-          margin-bottom: 12px;
-        }
-
+        .parent-box { padding: 8px; border-radius: 12px; margin-bottom: 12px; }
         .bg-father { background: rgba(239, 246, 255, 0.5); }
         .bg-mother { background: rgba(253, 242, 248, 0.5); }
-
-        .doc-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-        }
-
-        .doc-item {
-          text-decoration: none;
-          border: 1px solid #f1f5f9;
-          border-radius: 12px;
-          padding: 6px;
+        .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .doc-item { text-decoration: none; border: 1px solid #f1f5f9; border-radius: 12px; padding: 6px; display: flex; flex-direction: column; align-items: center; background: white; }
+        .doc-preview { width: 100%; aspect-ratio: 1/1; background: #f1f5f9; border-radius: 8px; overflow: hidden; margin-bottom: 4px; }
+        .doc-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .doc-label { font-size: 8px; font-weight: 900; color: #94a3b8; text-transform: uppercase; }
+        .action-bar { margin-top: 16px; padding-top: 20px; border-top: 1px solid #f1f5f9; display: flex; gap: 12px; }
+        .btn-approve { background: #0f172a; color: white; padding: 10px 24px; border-radius: 12px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+        .btn-reject { background: #fef2f2; color: #dc2626; padding: 10px 24px; border-radius: 12px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+        .fee-overlay {
+          padding: 24px;
+          background: #1e293b; /* Slightly lighter Slate for better depth */
+          border-radius: 16px;
+          margin: 16px;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          background: white;
+          gap: 20px;
+          border: 1px solid #334155;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .doc-preview {
-          width: 100%;
-          aspect-ratio: 1/1;
-          background: #f1f5f9;
-          border-radius: 8px;
-          overflow: hidden;
-          margin-bottom: 4px;
-        }
-
-        .doc-preview img { width: 100%; height: 100%; object-fit: cover; }
-
-        .doc-label {
-          font-size: 8px;
-          font-weight: 900;
-          color: #94a3b8;
-          text-transform: uppercase;
-        }
-
-        .action-bar {
-          margin-top: 16px;
-          padding-top: 20px;
-          border-top: 1px solid #f1f5f9;
+        .fee-header {
           display: flex;
+          align-items: center;
           gap: 12px;
         }
 
-        .btn-approve {
-          background: #0f172a;
-          color: white;
-          padding: 10px 24px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-weight: 700;
-          border: none;
-          cursor: pointer;
+        .fee-header p {
+          color: #f8fafc;
+          font-size: 15px;
+          font-weight: 600;
+          margin: 0;
         }
 
-        .btn-reject {
-          background: #fef2f2;
-          color: #dc2626;
-          padding: 10px 24px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-weight: 700;
-          border: none;
-          cursor: pointer;
+        .fee-inputs {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          width: 100%;
         }
 
-        .fee-overlay {
-          padding: 24px;
-          background: #0f172a;
+        .input-group {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          align-items: center;
+          gap: 6px;
         }
 
-        @media (min-width: 768px) { .fee-overlay { flex-direction: row; } }
-
-        .fee-overlay p { color: white; font-size: 14px; font-weight: 700; flex: 1; margin: 0; }
-
-        .fee-inputs { display: flex; align-items: center; gap: 12px; width: 100%; }
+        .input-group label {
+          font-size: 11px;
+          text-transform: uppercase;
+          color: #94a3b8;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+        }
 
         .fee-inputs input {
-          padding: 6px 12px;
+          padding: 10px 14px;
           border-radius: 10px;
-          border: none;
+          border: 1px solid #334155;
+          background: #0f172a;
+          color: white;
           font-size: 14px;
+          transition: border-color 0.2s;
+          width: 100%;
+          box-sizing: border-box;
         }
 
-        .confirm-btn { background: transparent; color: #94a3b8; border: none; font-size: 12px; font-weight: 700; cursor: pointer; padding: 0 12px; }
+        .fee-inputs input:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .fee-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          margin-top: 8px;
+        }
+
+        .confirm-btn-primary {
+          background: #4f46e5;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 13px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+
+        .confirm-btn-primary:hover {
+          background: #4338ca;
+        }
+
+        .cancel-link {
+          background: transparent;
+          color: #94a3b8;
+          border: none;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .cancel-link:hover {
+          color: #f8fafc;
+        }
+
+        @media (max-width: 640px) {
+          .fee-inputs { grid-template-columns: 1fr; }
+
       `}</style>
 
       <div className="app-container">
@@ -452,13 +259,20 @@ const Applications = () => {
             <p className="sub-text">Review student enrollment applications</p>
             <div className="branch-info">
               <h3>{branch ? `${branch} Applications` : "All Applications"}</h3>
-              <p>{branch ? "Showing applications for selected branch" : "Showing all applications"}</p>
+              <p>
+                {branch
+                  ? "Showing applications for selected branch"
+                  : "Showing all applications"}
+              </p>
             </div>
           </div>
 
           <div className="header-right">
             {branch && (
-              <button className="clear-btn" onClick={() => navigate("/admin/applications")}>
+              <button
+                className="clear-btn"
+                onClick={() => navigate("/admin/applications")}
+              >
                 Clear Filter
               </button>
             )}
@@ -477,16 +291,16 @@ const Applications = () => {
               <div key={app._id} className="app-card">
                 <div className="card-summary">
                   <div className="student-profile">
-                    <div className="profile-img-box">
+                    {/* <div className="profile-img-box">
                       {app.documents?.photo ? (
                         <img src={`${API_BASE_URL.replace("/api", "")}/uploads/${app.documents.photo}`} alt="" />
                       ) : (
                         <span style={{ color: "#a5b4fc", fontWeight: "bold" }}>?</span>
                       )}
-                    </div>
+                    </div> */}
                     <div className="student-name">
-                      <h3>{app.studentDetails.fullName}</h3>
-                      <p className="course-tag">{app.campusInfo.course}</p>
+                      <h3>{app.fullName}</h3>
+                      <p className="course-tag">{app.course}</p>
                       <p className="tracking-id">{app.trackingId}</p>
                     </div>
                   </div>
@@ -496,16 +310,28 @@ const Applications = () => {
                       {app.status}
                     </div>
                     {app.status === "approved" && app.applicationId && (
-                      <div className="badge-base status-approved">ID: {app.applicationId}</div>
+                      <div className="badge-base status-approved">
+                        ID: {app.applicationId}
+                      </div>
                     )}
                     {app.status === "approved" && app.fees && (
-                      <div className="badge-base" style={{ background: "#eef2ff", color: "#4338ca", borderColor: "#c7d2fe" }}>
+                      <div
+                        className="badge-base"
+                        style={{
+                          background: "#eef2ff",
+                          color: "#4338ca",
+                          borderColor: "#c7d2fe",
+                        }}
+                      >
                         ₹ {app.fees}
                       </div>
                     )}
                   </div>
 
-                  <button className="review-btn" onClick={() => toggleExpand(app._id)}>
+                  <button
+                    className="review-btn"
+                    onClick={() => toggleExpand(app._id)}
+                  >
                     {expandedIds.includes(app._id) ? "Collapse" : "Full Review"}
                   </button>
                 </div>
@@ -514,41 +340,127 @@ const Applications = () => {
                   <div className="detail-pane">
                     <div className="detail-grid">
                       <div className="detail-section">
-                        <h4><span className="section-number">1</span> Campus Info</h4>
+                        <h4>
+                          <span className="section-number">1</span> Campus &
+                          Contact
+                        </h4>
                         <div className="info-box">
-                          <p><b>Campus:</b> {app.campusInfo.campus}</p>
-                          <p><b>Course:</b> {app.campusInfo.course}</p>
-                          <p><b>Duration:</b> {app.campusInfo.duration}</p>
+                          <p>
+                            <b>Campus:</b> {app.campus}
+                          </p>
+                          <p>
+                            <b>Aadhaar:</b> {app.aadhaar}
+                          </p>
+                          <p>
+                            <b>Phone:</b> {app.phone}
+                          </p>
+                          <p>
+                            <b>Email:</b> {app.email}
+                          </p>
+                          <p
+                            style={{
+                              marginTop: "8px",
+                              fontSize: "12px",
+                              color: "#64748b",
+                            }}
+                          >
+                            <b>Address:</b> {app.address}, {app.city},{" "}
+                            {app.state} - {app.pin}
+                          </p>
                         </div>
                       </div>
 
                       <div className="detail-section">
-                        <h4><span className="section-number">2</span> Student Details</h4>
+                        <h4>
+                          <span className="section-number">2</span> Academic
+                          Background
+                        </h4>
                         <div style={{ fontSize: "14px" }}>
-                          <p><b>DOB:</b> {app.studentDetails.dob ? app.studentDetails.dob.split("T")[0].split("-").reverse().join("-") : "N/A"}</p>
-                          <p><b>Gender:</b> {app.studentDetails.gender}</p>
-                          <p><b>Caste:</b> {app.studentDetails.caste}</p>
-                          <p><b>Aadhaar:</b> {app.studentDetails.aadhaar}</p>
-                          <p><b>Contact:</b> {app.studentDetails.contact}</p>
-                          <p><b>Email:</b> {app.studentDetails.email}</p>
+                          <p>
+                            <b>Last Qualifications:</b> {app.lastQualification}
+                          </p>
+                          <p>
+                            <b>Previous Course:</b> {app.previousCourse}
+                          </p>
+                          <p>
+                            <b>Previous Institute:</b> {app.previousInstitute}
+                          </p>
+                          <p>
+                            <b>Passing Year:</b> {app.passingYear}
+                          </p>
+                          <p>
+                            <b>Percentage:</b> {app.percentage}%
+                          </p>
+                          <p>
+                            <b>DOB:</b>{" "}
+                            {app.dob
+                              ? new Date(app.dob).toLocaleDateString("en-GB")
+                              : "N/A"}
+                          </p>
                         </div>
                       </div>
 
                       <div className="detail-section">
-                        <h4><span className="section-number">3</span> Parent Details</h4>
+                        <h4>
+                          <span className="section-number">3</span> Family
+                          Details
+                        </h4>
                         <div className="parent-box bg-father">
-                          <p style={{ fontWeight: "bold", fontSize: "12px" }}>{app.parentDetails.fatherName}</p>
-                          <p style={{ fontSize: "10px", color: "#64748b" }}>{app.parentDetails.fatherOccupation || "N/A"}</p>
-                          <p style={{ fontSize: "12px", color: "#1d4ed8", fontWeight: "bold" }}>{app.parentDetails.fatherPhone}</p>
+                          <p style={{ fontWeight: "bold", fontSize: "12px" }}>
+                            {app.fatherName} (F)
+                          </p>
+                          <p style={{ fontSize: "10px", color: "#64748b" }}>
+                            {app.fatherOccupation}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "12px",
+                              color: "#1d4ed8",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {app.fatherPhone}
+                          </p>
                         </div>
                         <div className="parent-box bg-mother">
-                          <p style={{ fontWeight: "bold", fontSize: "12px" }}>{app.parentDetails.motherName}</p>
-                          <p style={{ fontSize: "10px", color: "#64748b" }}>{app.parentDetails.motherOccupation || "N/A"}</p>
-                          <p style={{ fontSize: "12px", color: "#be185d", fontWeight: "bold" }}>{app.parentDetails.motherPhone}</p>
+                          <p style={{ fontWeight: "bold", fontSize: "12px" }}>
+                            {app.motherName} (M)
+                          </p>
+                          <p style={{ fontSize: "10px", color: "#64748b" }}>
+                            {app.motherOccupation}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "12px",
+                              color: "#be185d",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {app.motherPhone}
+                          </p>
                         </div>
+                        {app.guardianName && (
+                          <div
+                            className="parent-box"
+                            style={{ background: "#f1f5f9" }}
+                          >
+                            <p style={{ fontWeight: "bold", fontSize: "12px" }}>
+                              {app.guardianName} ({app.guardianRelation})
+                            </p>
+                            <p
+                              style={{
+                                fontSize: "12px",
+                                color: "#475569",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {app.guardianPhone}
+                            </p>
+                          </div>
+                        )}
                       </div>
 
-                      <div className="detail-section">
+                      {/* <div className="detail-section">
                         <h4><span className="section-number">4</span> Documents</h4>
                         <div className="doc-grid">
                           {[
@@ -558,7 +470,7 @@ const Applications = () => {
                             { label: "12th", key: "twelfthMarksheet" },
                             { label: "UG", key: "graduation" },
                             { label: "PG", key: "postGraduation" },
-                          ].map((doc) => app.documents[doc.key] && (
+                          ].map((doc) => app.documents?.[doc.key] && (
                             <a key={doc.key} className="doc-item" href={`${API_BASE_URL.replace("/api", "")}/uploads/${app.documents[doc.key]}`} target="_blank" rel="noreferrer">
                               <div className="doc-preview">
                                 <img src={`${API_BASE_URL.replace("/api", "")}/uploads/${app.documents[doc.key]}`} alt="" />
@@ -567,24 +479,74 @@ const Applications = () => {
                             </a>
                           ))}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="action-bar">
-                      <button className="btn-approve" onClick={() => updateStatus(app._id, "approved")}>Approve & Set Fees</button>
-                      <button className="btn-reject" onClick={() => updateStatus(app._id, "rejected")}>Reject</button>
+                      <button
+                        className="btn-approve"
+                        onClick={() => updateStatus(app._id, "approved")}
+                      >
+                        Approve & Set Fees
+                      </button>
+                      <button
+                        className="btn-reject"
+                        onClick={() => updateStatus(app._id, "rejected")}
+                      >
+                        Reject
+                      </button>
                     </div>
                   </div>
                 )}
 
                 {feeInputId === app._id && (
                   <div className="fee-overlay">
-                    <p>Set the admission fee for this student to finalize approval:</p>
+                    <div className="fee-header">
+                      <div
+                        className="section-number"
+                        style={{ background: "#4f46e5" }}
+                      >
+                        ✓
+                      </div>
+                      <p>Finalize Admission for {app.fullName}</p>
+                    </div>
+
                     <div className="fee-inputs">
-                      <input type="number" placeholder="Fees" value={feeValue} onChange={(e) => setFeeValue(e.target.value)} style={{ width: "100px" }} />
-                      <input type="text" placeholder="Application ID" value={applicationIdValue} onChange={(e) => setApplicationIdValue(e.target.value)} style={{ width: "150px" }} />
-                      <button className="confirm-btn" onClick={() => setFeeInputId(null)}>Cancel</button>
-                      <button className="confirm-btn" style={{ color: "white" }} onClick={() => submitFees(app._id)}>Confirm</button>
+                      <div className="input-group">
+                        <label>Admission Fees (₹)</label>
+                        <input
+                          type="number"
+                          placeholder="e.g. 5000"
+                          value={feeValue}
+                          onChange={(e) => setFeeValue(e.target.value)}
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label>New Application ID</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. MMA/2026/001"
+                          value={applicationIdValue}
+                          onChange={(e) =>
+                            setApplicationIdValue(e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="fee-actions">
+                      <button
+                        className="cancel-link"
+                        onClick={() => setFeeInputId(null)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="confirm-btn-primary"
+                        onClick={() => submitFees(app._id)}
+                      >
+                        Confirm & Approve Student
+                      </button>
                     </div>
                   </div>
                 )}

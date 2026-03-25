@@ -7,12 +7,13 @@ const Enquiries = () => {
 
   const fetchEnquiries = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/enquiries`, {
+      const res = await fetch(`${API_BASE_URL}/api/enquiries`, {
         headers: getAdminHeaders(),
       });
 
       const result = await res.json();
-      setData(result);
+      console.log(result);
+      setData(result.data);
     } catch (err) {
       console.error(err);
     } finally {

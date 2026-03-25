@@ -76,7 +76,7 @@ exports.updateApplication = async (req, res) => {
     const { status, applicationId } = req.body;
 
     // ✅ Only allow specific fields to update
-    const allowedUpdates = ["status", "applicationId"];
+    const allowedUpdates = ["status", "applicationId", "fees"];
     const updates = {};
 
     Object.keys(req.body).forEach((key) => {

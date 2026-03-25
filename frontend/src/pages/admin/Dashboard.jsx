@@ -68,10 +68,10 @@ const Dashboard = () => {
       const enqData = await enqRes.json();
 
       localStorage.setItem("applications", JSON.stringify(apps));
-      localStorage.setItem("enquiries", JSON.stringify(enqData));
+      localStorage.setItem("enquiries", JSON.stringify(enqData.data));
 
       calculateStats(apps);
-      setEnquiryCount(enqData.length || 0);
+      setEnquiryCount(enqData.data?.length || 0);
     } catch (err) {
       console.error(err);
     }

@@ -101,6 +101,16 @@ const applicationSchema = new mongoose.Schema(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
+    // ✅ ADD THESE TWO FIELDS
+    applicationId: {
+      type: String,
+      unique: true, // optional but recommended
+      sparse: true, // prevents unique error when null
+    },
+
+    fees: {
+      type: Number,
+    },
   },
   { timestamps: true },
 );
