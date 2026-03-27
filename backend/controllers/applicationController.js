@@ -173,34 +173,30 @@ exports.getApplicationByTrackingId = async (req, res) => {
 // Get Application by Phone Number (Public)
 exports.getApplicationByPhone = async (req, res) => {
   try {
-    const { phone } = req.params;
+    const phone = req.params.phone.trim();
 
-    if (!phone) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number is required",
-      });
-    }
+    console.log("Searching for:", phone);
 
-    // Look for the phone number in studentDetails.contact
-    const application = await Application.findOne({ "studentDetails.contact": phone });
+    const applications = await Application.find({
+      phone: phone,
+    });
 
-    if (!application) {
+    console.log("Found:", applications);
+
+    if (!applications || applications.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No application found with this phone number.",
       });
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
-      data: application,
+      data: applications,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error while fetching application by phone.",
-      error: error.message,
-    });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+

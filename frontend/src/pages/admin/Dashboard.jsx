@@ -20,6 +20,10 @@ const branches = [
 const Dashboard = () => {
   const [branchStats, setBranchStats] = useState({});
   const [enquiryCount, setEnquiryCount] = useState(0);
+  const [searchType, setSearchType] = useState("tracking");
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const navigate = useNavigate();
   const calculateStats = (apps) => {
@@ -80,6 +84,39 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const handleSearch = async () => {
+    if (!searchValue) return;
+
+    setSearchLoading(true);
+    try {
+      let url = "";
+
+      if (searchType === "tracking") {
+        url = `${API_BASE_URL}/api/applications/status/${searchValue}`;
+      } else {
+        url = `${API_BASE_URL}/api/applications/phone/${searchValue}`;
+      }
+
+      const res = await fetch(url, {
+        headers: getAdminHeaders(),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      // normalize response (single or multiple)
+      if (Array.isArray(data.data)) {
+        setSearchResults(data.data);
+      } else if (data.data) {
+        setSearchResults([data.data]);
+      } else {
+        setSearchResults([]);
+      }
+    } catch (err) {
+      console.error(err);
+      setSearchResults([]);
+    }
+    setSearchLoading(false);
+  };
 
   const handleClick = (branchName) => {
     navigate(`/admin/applications?branch=${encodeURIComponent(branchName)}`);
@@ -228,6 +265,67 @@ const Dashboard = () => {
           max-width: 384px;
           border-left-color: #3b82f6;
         }
+          .search-container {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.single-line {
+  flex-wrap: nowrap; /* 🔥 prevents breaking into next line */
+}
+
+.search-select {
+  width: 180px;
+}
+
+.search-input {
+  flex: 1; /* 🔥 takes remaining space */
+  min-width: 200px;
+}
+
+
+.search-btn {
+ white-space: nowrap;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background: #4338ca;
+}
+
+.results-container {
+  margin-top: 20px;
+}
+
+.result-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.result-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
 
         @media (max-width: 768px) {
           .dashboard-container { padding: 24px; }
@@ -238,8 +336,69 @@ const Dashboard = () => {
       <div className="dashboard-container">
         <div className="dashboard-header">
           <h2>Admissions Dashboard</h2>
-          <p>Branch-wise application overview</p>
         </div>
+        <div className="search-container">
+          <h3 style={{ marginBottom: "12px" }}>Search Applications</h3>
+
+          <div className="search-row single-line">
+            <select
+              className="search-select"
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+            >
+              <option value="tracking">Tracking ID</option>
+              <option value="phone">Phone Number</option>
+            </select>
+
+            <input
+              type="text"
+              placeholder={
+                searchType === "tracking"
+                  ? "Enter Tracking ID"
+                  : "Enter Phone Number"
+              }
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="search-input"
+            />
+
+            <button onClick={handleSearch} className="search-btn">
+              {searchLoading ? "Searching..." : "Search"}
+            </button>
+          </div>
+
+          {/* Results */}
+          <div className="results-container">
+            {searchResults.length > 0
+              ? searchResults.map((item) => (
+                  <div key={item._id} className="result-card">
+                    <p>
+                      <strong>Name:</strong> {item.fullName}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {item.phone}
+                    </p>
+                    <p>
+                      <strong>Tracking ID:</strong> {item.trackingId}
+                    </p>
+                    <p>
+                      <strong>Course:</strong> {item.course}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {item.status}
+                    </p>
+                  </div>
+                ))
+              : !searchLoading &&
+                searchValue && (
+                  <p style={{ marginTop: "10px", color: "#64748b" }}>
+                    No results found
+                  </p>
+                )}
+          </div>
+        </div>
+
+        <p>Branch-wise application overview</p>
 
         <div className="grid-container">
           {branches.map((branch) => {
