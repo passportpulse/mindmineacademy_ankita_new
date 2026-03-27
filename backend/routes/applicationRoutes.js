@@ -7,7 +7,7 @@ const {
   getApplications,
   getApplicationById,
   updateApplication,
-  getApplicationByTrackingId,getApplicationByPhone
+  getApplicationByTrackingId,getApplicationByPhone,updateEmis
 } = require("../controllers/applicationController");
 
 // ✅ Simple POST (JSON)
@@ -20,5 +20,6 @@ router.get("/phone/:phone",  adminAuth,getApplicationByPhone);
 router.get("/", adminAuth, getApplications);
 router.get("/:id", adminAuth, getApplicationById);
 router.patch("/:id", adminAuth, updateApplication);
+router.patch("/:id/emi", adminAuth, updateEmis);
 
 module.exports = router;

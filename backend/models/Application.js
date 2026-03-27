@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-
+const emiSchema = new mongoose.Schema({
+  amount: { type: Number, required: true },
+  dueDate: { type: Date, required: true },
+});
 const applicationSchema = new mongoose.Schema(
   {
     trackingId: { type: String, unique: true },
@@ -110,6 +113,13 @@ const applicationSchema = new mongoose.Schema(
 
     fees: {
       type: Number,
+    },
+     // store multiple EMIs
+    emis: [emiSchema],
+    applicationId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows null for pending/rejected apps
     },
   },
   { timestamps: true },
