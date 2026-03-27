@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 const ApplicationCard = ({
   app,
@@ -13,7 +13,33 @@ const ApplicationCard = ({
   setApplicationIdValue,
   onSubmitFees,
   getStatusClass,
+  onUpdateEmi,
 }) => {
+  const [emiInputId, setEmiInputId] = useState(null);
+  const [emis, setEmis] = useState(app.emis || []);
+  const [emiAmount, setEmiAmount] = useState("");
+  const [emiDate, setEmiDate] = useState("");
+  const handleAddEmi = () => {
+    if (!emiAmount || !emiDate) return;
+
+    setEmis([...emis, { amount: emiAmount, dueDate: emiDate }]);
+    setEmiAmount("");
+    setEmiDate("");
+  };
+
+  const handleDeleteEmi = (index) => {
+    setEmis(emis.filter((_, i) => i !== index));
+  };
+
+  const handleSaveEmi = () => {
+    onUpdateEmi(app._id, emis); // call parent API
+    setEmiInputId(null);
+  };
+
+  useEffect(() => {
+    setEmis(app.emis || []);
+  }, [app]);
+
   return (
     <div className="app-card">
       <style>{`
@@ -102,7 +128,11 @@ const ApplicationCard = ({
           {app.status === "approved" && app.fees && (
             <div
               className="badge-base"
-              style={{ background: "#eef2ff", color: "#4338ca", borderColor: "#c7d2fe" }}
+              style={{
+                background: "#eef2ff",
+                color: "#4338ca",
+                borderColor: "#c7d2fe",
+              }}
             >
               ₹ {app.fees}
             </div>
@@ -119,64 +149,227 @@ const ApplicationCard = ({
           <div className="detail-grid">
             {/* Section 1: Personal & Contact */}
             <div className="detail-section">
-              <h4><span className="section-number">1</span> Personal & Contact</h4>
+              <h4>
+                <span className="section-number">1</span> Personal & Contact
+              </h4>
               <div className="info-box">
-                <p><b>Campus:</b> {app.campus}</p>
-                <p><b>Aadhaar:</b> {app.aadhaar}</p>
-                <p><b>Phone:</b> {app.phone}</p>
-                <p><b>Email:</b> {app.email}</p>
-                <p><b>DOB:</b> {app.dob ? new Date(app.dob).toLocaleDateString("en-GB") : "N/A"}</p>
-                <p><b>Gender:</b> <span style={{textTransform: 'capitalize'}}>{app.gender}</span></p>
-                <p><b>Caste:</b> {app.caste}</p>
-                <p style={{ marginTop: "8px", fontSize: "12px", color: "#64748b", borderTop: "1px solid #e2e8f0", paddingTop: "4px" }}>
-                  <b>Address:</b> {app.address}, {app.city}, {app.state} - {app.pin}
+                <p>
+                  <b>Campus:</b> {app.campus}
+                </p>
+                <p>
+                  <b>Aadhaar:</b> {app.aadhaar}
+                </p>
+                <p>
+                  <b>Phone:</b> {app.phone}
+                </p>
+                <p>
+                  <b>Email:</b> {app.email}
+                </p>
+                <p>
+                  <b>DOB:</b>{" "}
+                  {app.dob
+                    ? new Date(app.dob).toLocaleDateString("en-GB")
+                    : "N/A"}
+                </p>
+                <p>
+                  <b>Gender:</b>{" "}
+                  <span style={{ textTransform: "capitalize" }}>
+                    {app.gender}
+                  </span>
+                </p>
+                <p>
+                  <b>Caste:</b> {app.caste}
+                </p>
+                <p
+                  style={{
+                    marginTop: "8px",
+                    fontSize: "12px",
+                    color: "#64748b",
+                    borderTop: "1px solid #e2e8f0",
+                    paddingTop: "4px",
+                  }}
+                >
+                  <b>Address:</b> {app.address}, {app.city}, {app.state} -{" "}
+                  {app.pin}
                 </p>
               </div>
             </div>
 
             {/* Section 2: Academic Background */}
             <div className="detail-section">
-              <h4><span className="section-number">2</span> Academic</h4>
-              <div className="info-box" style={{ background: 'transparent', border: 'none', padding: '0' }}>
-                <p><b>Last Qualification:</b> {app.lastQualification}</p>
-                <p><b>Previous Course:</b> {app.previousCourse}</p>
-                <p><b>Institute:</b> {app.previousInstitute}</p>
-                <p><b>Passing Year:</b> {app.passingYear}</p>
-                <p><b>Percentage:</b> {app.percentage}%</p>
+              <h4>
+                <span className="section-number">2</span> Academic
+              </h4>
+              <div
+                className="info-box"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  padding: "0",
+                }}
+              >
+                <p>
+                  <b>Last Qualification:</b> {app.lastQualification}
+                </p>
+                <p>
+                  <b>Previous Course:</b> {app.previousCourse}
+                </p>
+                <p>
+                  <b>Institute:</b> {app.previousInstitute}
+                </p>
+                <p>
+                  <b>Passing Year:</b> {app.passingYear}
+                </p>
+                <p>
+                  <b>Percentage:</b> {app.percentage}%
+                </p>
               </div>
             </div>
 
             {/* Section 3: Family Details */}
             <div className="detail-section">
-              <h4><span className="section-number">3</span> Family</h4>
+              <h4>
+                <span className="section-number">3</span> Family
+              </h4>
               <div className="parent-box bg-father">
-                <p style={{ fontWeight: "bold", fontSize: "12px", marginBottom: '2px' }}>{app.fatherName} (Father)</p>
-                <p style={{ fontSize: "11px", color: "#64748b" }}>{app.fatherOccupation}</p>
-                <p style={{ fontSize: "12px", color: "#1d4ed8", fontWeight: "bold" }}>{app.fatherPhone}</p>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {app.fatherName} (Father)
+                </p>
+                <p style={{ fontSize: "11px", color: "#64748b" }}>
+                  {app.fatherOccupation}
+                </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "#1d4ed8",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {app.fatherPhone}
+                </p>
               </div>
               <div className="parent-box bg-mother">
-                <p style={{ fontWeight: "bold", fontSize: "12px", marginBottom: '2px' }}>{app.motherName} (Mother)</p>
-                <p style={{ fontSize: "11px", color: "#64748b" }}>{app.motherOccupation}</p>
-                <p style={{ fontSize: "12px", color: "#be185d", fontWeight: "bold" }}>{app.motherPhone}</p>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {app.motherName} (Mother)
+                </p>
+                <p style={{ fontSize: "11px", color: "#64748b" }}>
+                  {app.motherOccupation}
+                </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "#be185d",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {app.motherPhone}
+                </p>
               </div>
-              
+
               {app.guardianName && (
                 <div className="parent-box" style={{ background: "#f1f5f9" }}>
-                  <p style={{ fontWeight: "bold", fontSize: "12px", marginBottom: '2px' }}>{app.guardianName} ({app.guardianRelation})</p>
-                  <p style={{ fontSize: "12px", color: "#475569", fontWeight: "bold" }}>{app.guardianPhone}</p>
+                  <p
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    {app.guardianName} ({app.guardianRelation})
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "#475569",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {app.guardianPhone}
+                  </p>
                 </div>
               )}
             </div>
           </div>
 
           <div className="action-bar">
-            <button className="btn-approve" onClick={() => onUpdateStatus(app._id, "approved")}>
+            <button
+              className="btn-approve"
+              onClick={() => onUpdateStatus(app._id, "approved")}
+            >
               Approve & Set Fees
             </button>
-            <button className="btn-reject" onClick={() => onUpdateStatus(app._id, "rejected")}>
+            <button
+              className="btn-approve"
+              style={{
+                background: app.status === "approved" ? "#eef2ff" : "#e5e7eb",
+                color: app.status === "approved" ? "#4338ca" : "#9ca3af",
+                cursor: app.status === "approved" ? "pointer" : "not-allowed",
+                opacity: app.status === "approved" ? 1 : 0.6,
+              }}
+              disabled={app.status !== "approved"}
+              onClick={() => setEmiInputId(app._id)}
+            >
+              Set EMI
+            </button>
+
+            <button
+              className="btn-reject"
+              onClick={() => onUpdateStatus(app._id, "rejected")}
+            >
               Reject
             </button>
           </div>
+          {app.emis && app.emis.length > 0 && (
+            <div style={{ marginTop: "20px" }}>
+              <h4
+                style={{
+                  fontSize: "10px",
+                  fontWeight: "900",
+                  textTransform: "uppercase",
+                  color: "#94a3b8",
+                  letterSpacing: "0.2em",
+                  marginBottom: "10px",
+                }}
+              >
+                EMI Details
+              </h4>
+
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+              >
+                {app.emis.map((emi, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      background: "#f8fafc",
+                      padding: "10px",
+                      borderRadius: "10px",
+                      border: "1px solid #e2e8f0",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <span>EMI {index + 1}</span>
+                    <span>₹ {emi.amount}</span>
+                    <span>{new Date(emi.dueDate).toLocaleDateString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -184,7 +377,9 @@ const ApplicationCard = ({
       {feeInputId === app._id && (
         <div className="fee-overlay">
           <div className="fee-header">
-            <div className="section-number" style={{ background: "#4f46e5" }}>✓</div>
+            <div className="section-number" style={{ background: "#4f46e5" }}>
+              ✓
+            </div>
             <p>Finalize Admission for {app.fullName}</p>
           </div>
           <div className="fee-inputs">
@@ -208,9 +403,94 @@ const ApplicationCard = ({
             </div>
           </div>
           <div className="fee-actions">
-            <button className="cancel-link" onClick={() => setFeeInputId(null)}>Cancel</button>
-            <button className="confirm-btn-primary" onClick={() => onSubmitFees(app._id)}>
+            <button className="cancel-link" onClick={() => setFeeInputId(null)}>
+              Cancel
+            </button>
+            <button
+              className="confirm-btn-primary"
+              onClick={() => onSubmitFees(app._id)}
+            >
               Confirm & Approve
+            </button>
+          </div>
+        </div>
+      )}
+      {emiInputId === app._id && (
+        <div className="fee-overlay">
+          <div className="fee-header">
+            <div className="section-number" style={{ background: "#4f46e5" }}>
+              ₹
+            </div>
+            <p>Manage EMI for {app.fullName}</p>
+          </div>
+
+          {/* Add EMI */}
+          <div className="fee-inputs">
+            <div className="input-group">
+              <label>EMI Amount (₹)</label>
+              <input
+                type="number"
+                value={emiAmount}
+                onChange={(e) => setEmiAmount(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Due Date</label>
+              <input
+                type="date"
+                value={emiDate}
+                onChange={(e) => setEmiDate(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <button className="confirm-btn-primary" onClick={handleAddEmi}>
+            + Add EMI
+          </button>
+
+          {/* EMI LIST */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {emis.map((emi, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  background: "#fff",
+                  padding: "10px",
+                  borderRadius: "10px",
+                  border: "1px solid #e2e8f0",
+                }}
+              >
+                <span>
+                  ₹ {emi.amount} | {new Date(emi.dueDate).toLocaleDateString()}
+                </span>
+
+                <button
+                  onClick={() => handleDeleteEmi(index)}
+                  style={{
+                    background: "#fef2f2",
+                    color: "#dc2626",
+                    border: "none",
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="fee-actions">
+            <button className="cancel-link" onClick={() => setEmiInputId(null)}>
+              Cancel
+            </button>
+
+            <button className="confirm-btn-primary" onClick={handleSaveEmi}>
+              Save EMI
             </button>
           </div>
         </div>

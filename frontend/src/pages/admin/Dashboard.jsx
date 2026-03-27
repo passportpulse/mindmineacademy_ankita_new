@@ -33,6 +33,24 @@ const Dashboard = () => {
   };
 
   useEffect(() => { fetchData(); }, []);
+const onUpdateEmi = async (id, emis) => {
+  try {
+    await fetch(`${API_BASE_URL}/api/applications/${id}/emi`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAdminHeaders(),
+      },
+      body: JSON.stringify({ emis }),
+    });
+
+    // refresh UI
+    fetchData();
+    handleSearch();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const calculateStats = (apps) => {
     const stats = {};
@@ -171,6 +189,7 @@ const Dashboard = () => {
                 setApplicationIdValue={setApplicationIdValue}
                 onSubmitFees={submitFees}
                 getStatusClass={getStatusClass}
+                onUpdateEmi={onUpdateEmi}
               />
             ))}
           </div>

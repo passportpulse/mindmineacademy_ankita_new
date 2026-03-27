@@ -29,6 +29,25 @@ const Applications = () => {
       setLoading(false);
     }
   };
+  const onUpdateEmi = async (id, emis) => {
+  try {
+    await fetch(`${API_BASE_URL}/api/applications/${id}/emi`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAdminHeaders(),
+      },
+      body: JSON.stringify({ emis }),
+    });
+
+    // refresh list
+    fetchApps();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
   useEffect(() => {
     fetchApps();
@@ -363,6 +382,7 @@ const Applications = () => {
               setApplicationIdValue={setApplicationIdValue}
               onSubmitFees={submitFees}
               getStatusClass={getStatusClass}
+              onUpdateEmi={onUpdateEmi}
             />
           ))}
         </div>
