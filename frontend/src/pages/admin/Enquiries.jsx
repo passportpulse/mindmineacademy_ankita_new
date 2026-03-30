@@ -12,7 +12,8 @@ const Enquiries = () => {
         headers: getAdminHeaders(),
       });
       const result = await res.json();
-      setData(result.data || []);
+      console.log(result);
+      setData(result || []);
     } catch (err) {
       console.error("Fetch failed:", err);
     } finally {
