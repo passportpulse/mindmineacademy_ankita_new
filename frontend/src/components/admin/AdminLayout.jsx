@@ -1,4 +1,5 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -10,142 +11,122 @@ const AdminLayout = () => {
 
   return (
     <>
-<style>{`
-  /* 1. Reset body to ensure no weird gaps */
-  body {
-    margin: 0;
-    padding: 0;
-  }
+      <style>{`
+        .admin-page-container {
+          display: flex;
+          margin-top: 68px; 
+          min-height: calc(100vh - 68px);
+          background-color: #f1f5f9;
+        }
 
-  .admin-layout {
-    display: flex;
-    /* This pushes the layout down so it doesn't hide under the fixed navbar */
-    margin-top: 64px; 
-    min-height: calc(100vh - 64px);
-    font-family: 'Inter', sans-serif, system-ui;
-    background-color: #f1f5f9;
-  }
+        .admin-sidebar {
+          width: 260px;
+          background-color: #0f172a;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          position: sticky;
+          top: 68px; 
+          height: calc(100vh - 68px);
+          flex-shrink: 0;
+          z-index: 90;
+        }
 
-  /* SIDEBAR STYLES */
-  .sidebar {
-    width: 260px;
-    background-color: #0f172a; /* Slate 900 */
-    color: #ffffff;
-    padding: 40px 24px;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
+        .admin-sidebar-header {
+          padding: 24px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-    /* FULL HEIGHT LOGIC */
-    position: sticky;
-    top: 64px; /* Sticks exactly below the navbar */
-    height: calc(100vh - 64px); /* Takes up the remaining screen height */
-    box-sizing: border-box;
-  }
+        /* LOGO FIX START */
+        .admin-side-logo {
+          width: 32px; /* Explicit width */
+          height: 32px; /* Explicit height */
+          display: block;
+        }
+        /* LOGO FIX END */
 
-  .sidebar-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: #f8fafc;
-    letter-spacing: -0.025em;
-    padding-left: 16px;
-  }
+        .admin-nav {
+          flex: 1;
+          padding: 20px 14px;
+        }
 
-  .nav-button {
-    display: block;
-    width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    text-align: left;
-    background: transparent;
-    border: none;
-    color: #94a3b8;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
+        .admin-nav-item {
+          display: block;
+          padding: 12px 16px;
+          margin-bottom: 4px;
+          color: #94a3b8;
+          text-decoration: none !important;
+          font-size: 14px;
+          font-weight: 500;
+          border-radius: 10px;
+          transition: all 0.2s;
+        }
 
-  .nav-button:hover {
-    background-color: #1e293b;
-    color: #ffffff;
-  }
+        .admin-nav-item:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+        }
 
-  .logout-button {
-    margin-top: auto; /* Pushes button to the very bottom of the sidebar */
-    padding: 16px;
-    text-align: left;
-    background: transparent;
-    border: none;
-    color: #f87171;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border-top: 1px solid #1e293b;
-    transition: background 0.2s;
-  }
+        .admin-nav-item.active {
+          background-color: #4f46e5;
+          color: #ffffff;
+        }
 
-  .logout-button:hover {
-    background-color: rgba(248, 113, 113, 0.05);
-  }
+        .admin-sidebar-footer {
+          padding: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-  /* MAIN CONTENT AREA */
-  .main-content {
-    flex: 1;
-    padding: 40px;
-    background-color: #f1f5f9;
-    /* Allows the content to scroll independently if it's long */
-    min-height: calc(100vh - 64px);
-  }
+        .admin-logout-btn {
+          width: 100%;
+          padding: 10px;
+          background: transparent;
+          border: 1px solid rgba(248, 113, 113, 0.3);
+          color: #f87171;
+          border-radius: 8px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+        }
 
-  @media (max-width: 768px) {
-    .admin-layout {
-      flex-direction: column;
-      margin-top: 60px; 
-    }
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      top: 0;
-    }
-  }
-`}</style>
-      <div className="admin-layout">
-        {/* Sidebar */}
-        <div className="sidebar">
-          <h2 className="sidebar-title">Admin Panel</h2>
+        .admin-main-content {
+          flex: 1;
+          padding: 40px;
+          min-width: 0;
+          background-color: #f8fafc;
+        }
 
-          <button
-            onClick={() => navigate("/admin/dashboard")}
-            className="nav-button"
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => navigate("/admin/enquiries")}
-            className="nav-button"
-          >
-            Enquiries
-          </button>
-          <button
-            onClick={() => navigate("/admin/applications")}
-            className="nav-button"
-          >
-            Applications
-          </button>
+        @media (max-width: 991px) {
+          .admin-page-container { flex-direction: column; }
+          .admin-sidebar { width: 100%; height: auto; position: relative; top: 0; }
+        }
+      `}</style>
 
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
-        </div>
+      <div className="admin-page-container">
+        <aside className="admin-sidebar">
+          <div className="admin-sidebar-header">
+            {/* Added a fallback alt text check */}
+            <img src={logo} alt="Mindmine Admin Logo" className="admin-side-logo" />
+            <span className="text-sm font-bold text-white">Admin</span>
+          </div>
 
-        {/* Content */}
-        <div className="main-content">
+          <nav className="admin-nav">
+            <NavLink to="/admin/dashboard" className="admin-nav-item">Dashboard</NavLink>
+            <NavLink to="/admin/enquiries" className="admin-nav-item">Enquiries</NavLink>
+            <NavLink to="/admin/applications" className="admin-nav-item">Applications</NavLink>
+          </nav>
+
+          <div className="admin-sidebar-footer">
+            <button onClick={handleLogout} className="admin-logout-btn">Logout</button>
+          </div>
+        </aside>
+
+        <main className="admin-main-content">
           <Outlet />
-        </div>
+        </main>
       </div>
     </>
   );

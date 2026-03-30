@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ApplicationCard = ({
   app,
@@ -19,9 +19,9 @@ const ApplicationCard = ({
   const [emis, setEmis] = useState(app.emis || []);
   const [emiAmount, setEmiAmount] = useState("");
   const [emiDate, setEmiDate] = useState("");
+
   const handleAddEmi = () => {
     if (!emiAmount || !emiDate) return;
-
     setEmis([...emis, { amount: emiAmount, dueDate: emiDate }]);
     setEmiAmount("");
     setEmiDate("");
@@ -32,7 +32,7 @@ const ApplicationCard = ({
   };
 
   const handleSaveEmi = () => {
-    onUpdateEmi(app._id, emis); // call parent API
+    onUpdateEmi(app._id, emis);
     setEmiInputId(null);
   };
 
@@ -43,7 +43,6 @@ const ApplicationCard = ({
   return (
     <div className="app-card">
       <style>{`
-        /* Scoped Styles for ApplicationCard */
         .app-card { 
           background: #ffffff; 
           box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
@@ -54,28 +53,65 @@ const ApplicationCard = ({
           font-family: 'Inter', sans-serif;
         }
         
+        /* Fixed Grid Layout for Header Alignment */
         .card-summary { 
           padding: 20px; 
-          display: flex; 
-          flex-direction: column; 
+          display: grid; 
+          grid-template-columns: 1fr; /* Stack on mobile */
           gap: 16px; 
-        }
-        @media (min-width: 768px) { 
-          .card-summary { flex-direction: row; justify-content: space-between; align-items: center; } 
+          align-items: center;
         }
 
-        .student-name h3 { font-weight: 700; font-size: 18px; color: #0f172a; margin: 0; }
+        @media (min-width: 768px) { 
+          .card-summary { 
+            grid-template-columns: 2.5fr 2fr 1fr; /* Fixed 3-column lane system */
+            gap: 24px;
+          } 
+        }
+
+        .student-profile { min-width: 0; }
+        .student-name h3 { 
+          font-weight: 700; 
+          font-size: 18px; 
+          color: #0f172a; 
+          margin: 0; 
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; /* Prevents long names from breaking alignment */
+        }
         .course-tag { color: #4f46e5; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
         .tracking-id { font-size: 10px; font-family: monospace; color: #94a3b8; margin: 4px 0 0 0; }
 
         .status-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-        .badge-base { padding: 4px 12px; border-radius: 9999px; border: 1px solid; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+        @media (min-width: 768px) { .status-badges { justify-content: center; } } /* Centers badges in middle lane */
+
+        .badge-base { 
+          padding: 4px 12px; 
+          border-radius: 9999px; 
+          border: 1px solid; 
+          font-size: 10px; 
+          font-weight: 900; 
+          text-transform: uppercase; 
+          white-space: nowrap;
+        }
         
         .status-approved { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
         .status-rejected { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
         .status-pending { background: #fefce8; color: #a16207; border-color: #fef08a; }
 
-        .review-btn { background: #f1f5f9; color: #475569; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+        .review-btn-container { display: flex; justify-content: flex-end; } /* Pushes button to far right */
+        .review-btn { 
+          background: #f1f5f9; 
+          color: #475569; 
+          padding: 8px 16px; 
+          border-radius: 12px; 
+          font-size: 12px; 
+          font-weight: 700; 
+          border: none; 
+          cursor: pointer; 
+          transition: 0.2s;
+          white-space: nowrap;
+        }
         .review-btn:hover { background: #e2e8f0; }
 
         .detail-pane { padding: 24px; border-top: 1px solid #f8fafc; background-color: #fcfcfd; }
@@ -84,7 +120,6 @@ const ApplicationCard = ({
 
         .detail-section h4 { font-size: 10px; font-weight: 900; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.2em; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
         .section-number { width: 16px; height: 16px; background: #1e293b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; }
-        
         .info-box { background: #f8fafc; padding: 12px; border-radius: 16px; font-size: 14px; border: 1px solid #f1f5f9; line-height: 1.6; }
         .parent-box { padding: 10px; border-radius: 12px; margin-bottom: 12px; border: 1px solid transparent; }
         .bg-father { background: rgba(239, 246, 255, 0.5); border-color: #dbeafe; }
@@ -101,13 +136,14 @@ const ApplicationCard = ({
         .input-group label { font-size: 11px; font-weight: 700; color: #64748b; }
         .input-group input { padding: 10px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 13px; outline: none; }
         .input-group input:focus { border-color: #4f46e5; }
-        
         .fee-actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 8px; }
         .confirm-btn-primary { background: #4f46e5; color: white; border: none; padding: 10px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; }
         .cancel-link { background: transparent; color: #94a3b8; border: none; cursor: pointer; font-weight: 600; font-size: 13px; }
       `}</style>
 
+      {/* --- ALIGNED HEADER --- */}
       <div className="card-summary">
+        {/* Lane 1: Name & ID */}
         <div className="student-profile">
           <div className="student-name">
             <h3>{app.fullName}</h3>
@@ -116,6 +152,7 @@ const ApplicationCard = ({
           </div>
         </div>
 
+        {/* Lane 2: Badges (Centered) */}
         <div className="status-badges">
           <div className={`badge-base ${getStatusClass(app.status)}`}>
             {app.status}
@@ -139,15 +176,18 @@ const ApplicationCard = ({
           )}
         </div>
 
-        <button className="review-btn" onClick={() => onToggle(app._id)}>
-          {isExpanded ? "Collapse" : "Full Review"}
-        </button>
+        {/* Lane 3: Button (Right Aligned) */}
+        <div className="review-btn-container">
+          <button className="review-btn" onClick={() => onToggle(app._id)}>
+            {isExpanded ? "Collapse" : "Full Review"}
+          </button>
+        </div>
       </div>
 
+      {/* --- CONTENT SECTION --- */}
       {isExpanded && (
         <div className="detail-pane">
           <div className="detail-grid">
-            {/* Section 1: Personal & Contact */}
             <div className="detail-section">
               <h4>
                 <span className="section-number">1</span> Personal & Contact
@@ -195,7 +235,6 @@ const ApplicationCard = ({
               </div>
             </div>
 
-            {/* Section 2: Academic Background */}
             <div className="detail-section">
               <h4>
                 <span className="section-number">2</span> Academic
@@ -226,7 +265,6 @@ const ApplicationCard = ({
               </div>
             </div>
 
-            {/* Section 3: Family Details */}
             <div className="detail-section">
               <h4>
                 <span className="section-number">3</span> Family
@@ -277,29 +315,6 @@ const ApplicationCard = ({
                   {app.motherPhone}
                 </p>
               </div>
-
-              {app.guardianName && (
-                <div className="parent-box" style={{ background: "#f1f5f9" }}>
-                  <p
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                      marginBottom: "2px",
-                    }}
-                  >
-                    {app.guardianName} ({app.guardianRelation})
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#475569",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {app.guardianPhone}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
 
@@ -323,7 +338,6 @@ const ApplicationCard = ({
             >
               Set EMI
             </button>
-
             <button
               className="btn-reject"
               onClick={() => onUpdateStatus(app._id, "rejected")}
@@ -331,6 +345,7 @@ const ApplicationCard = ({
               Reject
             </button>
           </div>
+
           {app.emis && app.emis.length > 0 && (
             <div style={{ marginTop: "20px" }}>
               <h4
@@ -346,25 +361,39 @@ const ApplicationCard = ({
                 EMI Details
               </h4>
 
+              {/* Changed to row style with wrapping */}
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                }}
               >
                 {app.emis.map((emi, index) => (
                   <div
                     key={index}
                     style={{
                       display: "flex",
-                      justifyContent: "space-between",
+                      gap: "12px",
+                      alignItems: "center",
                       background: "#f8fafc",
-                      padding: "10px",
+                      padding: "8px 14px",
                       borderRadius: "10px",
                       border: "1px solid #e2e8f0",
-                      fontSize: "13px",
+                      fontSize: "12px",
                     }}
                   >
-                    <span>EMI {index + 1}</span>
-                    <span>₹ {emi.amount}</span>
-                    <span>{new Date(emi.dueDate).toLocaleDateString()}</span>
+                    <span style={{ fontWeight: "700", color: "#64748b" }}>
+                      Emi {index + 1}
+                    </span>
+                    <span style={{ fontWeight: "600", color: "#0f172a" }}>
+                      ₹{emi.amount}
+                    </span>
+                    <span style={{ color: "#94a3b8" }}>|</span>
+                    <span style={{ color: "#475569" }}>
+                      {new Date(emi.dueDate).toLocaleDateString("en-GB")}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -373,7 +402,7 @@ const ApplicationCard = ({
         </div>
       )}
 
-      {/* Fee Overlay */}
+      {/* --- OVERLAYS --- */}
       {feeInputId === app._id && (
         <div className="fee-overlay">
           <div className="fee-header">
@@ -415,6 +444,7 @@ const ApplicationCard = ({
           </div>
         </div>
       )}
+
       {emiInputId === app._id && (
         <div className="fee-overlay">
           <div className="fee-header">
@@ -424,9 +454,19 @@ const ApplicationCard = ({
             <p>Manage EMI for {app.fullName}</p>
           </div>
 
-          {/* Add EMI */}
-          <div className="fee-inputs">
-            <div className="input-group">
+          {/* Row-style Inputs */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              gap: "12px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div
+              className="input-group"
+              style={{ flex: "1", minWidth: "150px" }}
+            >
               <label>EMI Amount (₹)</label>
               <input
                 type="number"
@@ -434,8 +474,10 @@ const ApplicationCard = ({
                 onChange={(e) => setEmiAmount(e.target.value)}
               />
             </div>
-
-            <div className="input-group">
+            <div
+              className="input-group"
+              style={{ flex: "1", minWidth: "150px" }}
+            >
               <label>Due Date</label>
               <input
                 type="date"
@@ -443,42 +485,55 @@ const ApplicationCard = ({
                 onChange={(e) => setEmiDate(e.target.value)}
               />
             </div>
+            <button
+              className="confirm-btn-primary"
+              onClick={handleAddEmi}
+              style={{ height: "40px", padding: "0 20px" }}
+            >
+              + Add
+            </button>
           </div>
 
-          <button className="confirm-btn-primary" onClick={handleAddEmi}>
-            + Add EMI
-          </button>
-
-          {/* EMI LIST */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {/* Row-style List of added EMIs */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+              marginTop: "10px",
+            }}
+          >
             {emis.map((emi, index) => (
               <div
                 key={index}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "10px",
                   background: "#fff",
-                  padding: "10px",
+                  padding: "6px 12px",
                   borderRadius: "10px",
                   border: "1px solid #e2e8f0",
+                  fontSize: "12px",
                 }}
               >
-                <span>
-                  ₹ {emi.amount} | {new Date(emi.dueDate).toLocaleDateString()}
-                </span>
-
+                <span style={{ fontWeight: "600" }}>₹{emi.amount}</span>
+                <span style={{ color: "#64748b" }}>|</span>
+                <span>{new Date(emi.dueDate).toLocaleDateString()}</span>
                 <button
                   onClick={() => handleDeleteEmi(index)}
                   style={{
-                    background: "#fef2f2",
+                    background: "transparent",
                     color: "#dc2626",
                     border: "none",
-                    padding: "4px 8px",
-                    borderRadius: "6px",
+                    padding: "0",
                     cursor: "pointer",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    marginLeft: "5px",
                   }}
                 >
-                  Delete
+                  ×
                 </button>
               </div>
             ))}
@@ -488,9 +543,8 @@ const ApplicationCard = ({
             <button className="cancel-link" onClick={() => setEmiInputId(null)}>
               Cancel
             </button>
-
             <button className="confirm-btn-primary" onClick={handleSaveEmi}>
-              Save EMI
+              Save EMI Plan
             </button>
           </div>
         </div>

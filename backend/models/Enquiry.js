@@ -38,8 +38,14 @@ const enquirySchema = new mongoose.Schema(
       minlength: 5,
       maxlength: 500,
     },
+    status: {
+      type: String,
+      enum: ["new", "connected", "junk", "admission", "followup"],
+      default: "new",
+    },
   },
-  { timestamps: true }
+
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Enquiry", enquirySchema);

@@ -149,7 +149,7 @@ const onUpdateEmi = async (id, emis) => {
       `}</style>
 
       <div className="header-flex">
-        <h2>Admissions Dashboard</h2>
+        <h2>Admin Dashboard</h2>
         <p className="sub-text">Overview of branches and quick application lookup</p>
       </div>
 

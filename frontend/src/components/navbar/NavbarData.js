@@ -45,7 +45,10 @@ export const navLinks = [
       { label: "General Studies", path: "/tutorials/general-studies" },
     ],
   },
-  { label: "Admin", path: "/admin/dashboard" },
+  { label: "Process", path: "/process" },
+  { label: "Campuses", path: "/campuses" },
+  { label: "Contact", path: "/contact" },
+
   {
     label: "Student Zone",
     dropdown: [
@@ -56,8 +59,5 @@ export const navLinks = [
       { label: "Payment", path: "/student-zone/payment" },
     ],
   },
-  { label: "Process", path: "/process" },
-  { label: "Campuses", path: "/campuses" },
-  { label: "Contact", path: "/contact" },
-  { label: "Apply Now", path: "/apply-now" },
+  { label: "Admin", path: "/admin/dashboard" },
 ];
