@@ -1,8 +1,49 @@
 const mongoose = require("mongoose");
-const emiSchema = new mongoose.Schema({
-  amount: { type: Number, required: true },
-  dueDate: { type: Date, required: true },
+
+
+// ✅ PAYMENT SCHEMA
+const paymentSchema = new mongoose.Schema({
+  amount: {
+    type: Number,
+    required: true,
+  },
+  method: {
+    type: String,
+    enum: ["cash", "upi", "bank"],
+    required: true,
+  },
+  txnId: {
+    type: String,
+    default: "",
+  },
+  emiIndex: {
+    type: Number, // 🔥 which EMI this payment belongs to (optional)
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
+
+
+// ✅ EMI SCHEMA
+const emiSchema = new mongoose.Schema({
+  amount: {
+    type: Number,
+    required: true,
+  },
+  dueDate: {
+    type: Date,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "paid", "overdue"],
+    default: "pending",
+  },
+});
+
+
 const applicationSchema = new mongoose.Schema(
   {
     trackingId: { type: String, unique: true },
@@ -79,10 +120,8 @@ const applicationSchema = new mongoose.Schema(
     motherOccupation: { type: String },
 
     guardianName: { type: String },
-    guardianRelation: {
-      type: String,
-    },
-    guardianPhone: { type: String },
+    guardianRelation: String,
+    guardianPhone: String,
 
     // Academic
     lastQualification: { type: String, required: true },
@@ -90,8 +129,8 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       match: [/^\d{4}$/, "Year must be 4 digits"],
     },
-    previousCourse: { type: String },
-    previousInstitute: { type: String },
+    previousCourse: String,
+    previousInstitute: String,
     percentage: {
       type: Number,
       min: 0,
@@ -104,25 +143,26 @@ const applicationSchema = new mongoose.Schema(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
-    // ✅ ADD THESE TWO FIELDS
+
+    // Admission Details
     applicationId: {
       type: String,
-      unique: true, // optional but recommended
-      sparse: true, // prevents unique error when null
+      unique: true,
+      sparse: true,
     },
 
     fees: {
       type: Number,
+      default: 0,
     },
-     // store multiple EMIs
+
+    // ✅ EMI ARRAY
     emis: [emiSchema],
-    applicationId: {
-      type: String,
-      unique: true,
-      sparse: true, // Allows null for pending/rejected apps
-    },
+
+    // ✅ PAYMENTS ARRAY (NEW 🔥)
+    payments: [paymentSchema],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Application", applicationSchema);

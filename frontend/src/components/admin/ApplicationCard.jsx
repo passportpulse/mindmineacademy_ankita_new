@@ -377,7 +377,7 @@ const ApplicationCard = ({
                 EMI Details
               </h4>
 
-              {/* Changed to row style with wrapping */}
+              {/* EMI Row List with Status */}
               <div
                 style={{
                   display: "flex",
@@ -386,32 +386,86 @@ const ApplicationCard = ({
                   gap: "10px",
                 }}
               >
-                {app.emis.map((emi, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: "flex",
-                      gap: "12px",
-                      alignItems: "center",
-                      background: "#f8fafc",
-                      padding: "8px 14px",
-                      borderRadius: "10px",
-                      border: "1px solid #e2e8f0",
-                      fontSize: "12px",
-                    }}
-                  >
-                    <span style={{ fontWeight: "700", color: "#64748b" }}>
-                      Emi {index + 1}
-                    </span>
-                    <span style={{ fontWeight: "600", color: "#0f172a" }}>
-                      ₹{emi.amount}
-                    </span>
-                    <span style={{ color: "#94a3b8" }}>|</span>
-                    <span style={{ color: "#475569" }}>
-                      {new Date(emi.dueDate).toLocaleDateString("en-GB")}
-                    </span>
-                  </div>
-                ))}
+                {(() => {
+                  let remainingPaid = (app.payments || []).reduce(
+                    (sum, p) => sum + Number(p.amount || 0),
+                    0,
+                  );
+
+                  return app.emis.map((emi, index) => {
+                    const emiAmount = Number(emi.amount || 0);
+                    let status = "pending";
+
+                    if (remainingPaid >= emiAmount) {
+                      status = "paid";
+                      remainingPaid -= emiAmount;
+                    } else {
+                      const today = new Date();
+                      const due = new Date(emi.dueDate);
+
+                      if (due < today) status = "overdue";
+                    }
+
+                    const statusStyle = {
+                      paid: {
+                        background: "#dcfce7",
+                        color: "#166534",
+                      },
+                      pending: {
+                        background: "#fef9c3",
+                        color: "#854d0e",
+                      },
+                      overdue: {
+                        background: "#fee2e2",
+                        color: "#991b1b",
+                      },
+                    };
+
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          gap: "12px",
+                          alignItems: "center",
+                          background: "#f8fafc",
+                          padding: "8px 14px",
+                          borderRadius: "10px",
+                          border: "1px solid #e2e8f0",
+                          fontSize: "12px",
+                        }}
+                      >
+                        <span style={{ fontWeight: "700", color: "#64748b" }}>
+                          Emi {index + 1}
+                        </span>
+
+                        <span style={{ fontWeight: "600", color: "#0f172a" }}>
+                          ₹{emi.amount}
+                        </span>
+
+                        <span style={{ color: "#94a3b8" }}>|</span>
+
+                        <span style={{ color: "#475569" }}>
+                          {new Date(emi.dueDate).toLocaleDateString("en-GB")}
+                        </span>
+
+                        {/* ✅ STATUS BADGE */}
+                        <span
+                          style={{
+                            padding: "2px 8px",
+                            borderRadius: "999px",
+                            fontSize: "10px",
+                            fontWeight: "700",
+                            textTransform: "uppercase",
+                            ...statusStyle[status],
+                          }}
+                        >
+                          {status}
+                        </span>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           )}

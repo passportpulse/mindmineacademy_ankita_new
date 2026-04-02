@@ -8,8 +8,22 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
   const [amount, setAmount] = useState("");
   const [method, setMethod] = useState("cash");
   const [txnId, setTxnId] = useState("");
+  const today = new Date();
 
-  const paidAmount = payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+  const getStatus = (emi) => {
+    if (emi.status === "paid") return "paid";
+    if (emi.dueDate && new Date(emi.dueDate) < today) return "overdue";
+    return "pending";
+  };
+
+  const [activeEmiIndex, setActiveEmiIndex] = useState(null);
+  const [emiMode, setEmiMode] = useState("cash");
+  const [emiTxn, setEmiTxn] = useState("");
+
+  const paidAmount = payments.reduce(
+    (sum, p) => sum + Number(p.amount || 0),
+    0,
+  );
   const dueAmount = totalFees - paidAmount;
 
   const handleAddPayment = async () => {
@@ -41,7 +55,9 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
             <h3>Fees Summary</h3>
             <p className="subtitle">Manage payments and installments</p>
           </div>
-          <button className="close-circle-btn" onClick={onClose}>✕</button>
+          <button className="close-circle-btn" onClick={onClose}>
+            ✕
+          </button>
         </div>
 
         {/* Stats Grid */}
@@ -52,7 +68,9 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
           </div>
           <div className="stat-card paid-border">
             <label>Amount Paid</label>
-            <div className="value text-emerald">₹{paidAmount.toLocaleString()}</div>
+            <div className="value text-emerald">
+              ₹{paidAmount.toLocaleString()}
+            </div>
           </div>
           <div className="stat-card due-border">
             <label>Current Due</label>
@@ -72,7 +90,10 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
-                <select value={method} onChange={(e) => setMethod(e.target.value)}>
+                <select
+                  value={method}
+                  onChange={(e) => setMethod(e.target.value)}
+                >
                   <option value="cash">Cash</option>
                   <option value="upi">UPI / Scanner</option>
                   <option value="bank">Bank Transfer</option>
@@ -97,15 +118,105 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
             {emis.length > 0 && (
               <div className="section-card emi-section">
                 <h4>Upcoming EMI Schedule</h4>
+
                 <div className="emi-list">
-                  {emis.map((emi, i) => (
-                    <div key={i} className="emi-row">
-                      <span className="emi-date">
-                        {new Date(emi.dueDate).toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' })}
-                      </span>
-                      <span className="emi-amt">₹{emi.amount}</span>
-                    </div>
-                  ))}
+                  {emis.map((emi, i) => {
+                    const status = getStatus(emi);
+
+                    return (
+                      <div key={i} className="emi-card">
+                        <div className="emi-top">
+                          <span className="emi-date">
+                            {new Date(emi.dueDate).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </span>
+
+                          <span className="emi-amt">₹{emi.amount}</span>
+
+                          <span className={`emi-status status-${status}`}>
+                            {status}
+                          </span>
+                        </div>
+
+                        {/* ACTION */}
+                        {status !== "paid" && (
+                          <div className="emi-actions">
+                            {activeEmiIndex === i ? (
+                              <div className="emi-payment-box">
+                                <select
+                                  value={emiMode}
+                                  onChange={(e) => setEmiMode(e.target.value)}
+                                >
+                                  <option value="cash">Cash</option>
+                                  <option value="upi">UPI</option>
+                                  <option value="bank">Bank Transfer</option>
+                                </select>
+
+                                {emiMode !== "cash" && (
+                                  <input
+                                    type="text"
+                                    placeholder="Transaction ID"
+                                    value={emiTxn}
+                                    onChange={(e) => setEmiTxn(e.target.value)}
+                                  />
+                                )}
+
+                                <button
+                                  className="confirm-btn"
+                                  onClick={async () => {
+                                    try {
+                                      await fetch(
+                                        `/api/applications/${app._id}/payment`,
+                                        {
+                                          method: "POST",
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                          },
+                                          body: JSON.stringify({
+                                            amount: emi.amount,
+                                            type: "emi",
+                                            paymentMode: emiMode,
+                                            txnId:
+                                              emiMode !== "cash" ? emiTxn : "",
+                                            emiIndex: i,
+                                          }),
+                                        },
+                                      );
+
+                                      setActiveEmiIndex(null);
+                                      setEmiTxn("");
+                                      refreshApp();
+                                    } catch (err) {
+                                      console.error(err);
+                                    }
+                                  }}
+                                >
+                                  Confirm
+                                </button>
+
+                                <button
+                                  className="cancel-btn"
+                                  onClick={() => setActiveEmiIndex(null)}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                className="mark-paid-btn"
+                                onClick={() => setActiveEmiIndex(i)}
+                              >
+                                Mark Paid
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -117,17 +228,25 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
               <h4>Transaction History</h4>
               <div className="history-list">
                 {payments.length === 0 ? (
-                  <div className="empty-state">No transactions recorded yet.</div>
+                  <div className="empty-state">
+                    No transactions recorded yet.
+                  </div>
                 ) : (
                   payments.map((p, i) => (
                     <div key={i} className="history-card">
                       <div className="h-top">
                         <span className="h-amount">₹{p.amount}</span>
-                        <span className={`h-method tag-${p.method}`}>{p.method}</span>
+                        <span className={`h-method tag-${p.method}`}>
+                          {p.method}
+                        </span>
                       </div>
                       <div className="h-bottom">
-                        <span className="h-txn">{p.txnId || "Cash Payment"}</span>
-                        <span className="h-date">{new Date(p.date).toLocaleDateString("en-GB")}</span>
+                        <span className="h-txn">
+                          {p.txnId || "Cash Payment"}
+                        </span>
+                        <span className="h-date">
+                          {new Date(p.date).toLocaleDateString("en-GB")}
+                        </span>
                       </div>
                     </div>
                   ))
@@ -137,7 +256,9 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
           </div>
         </div>
 
-        <button className="footer-close-btn" onClick={onClose}>Dismiss</button>
+        <button className="footer-close-btn" onClick={onClose}>
+          Dismiss
+        </button>
       </div>
 
       <style>{`
@@ -290,6 +411,82 @@ const FeesSummaryModal = ({ app, onClose, refreshApp }) => {
         }
         .footer-close-btn:hover { background: #e2e8f0; }
         .empty-state { text-align: center; color: #94a3b8; font-size: 13px; padding: 20px; }
+        .emi-card {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.emi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.emi-status {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-paid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-overdue {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.mark-paid-btn {
+  margin-top: 8px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.emi-payment-box {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.confirm-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 11px;
+  cursor: pointer;
+}
+
       `}</style>
     </div>
   );
