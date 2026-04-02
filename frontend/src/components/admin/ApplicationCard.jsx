@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FeesSummaryModal from "./FeesSummaryModal";
 
 const ApplicationCard = ({
   app,
@@ -19,6 +20,7 @@ const ApplicationCard = ({
   const [emis, setEmis] = useState(app.emis || []);
   const [emiAmount, setEmiAmount] = useState("");
   const [emiDate, setEmiDate] = useState("");
+  const [showFeesModal, setShowFeesModal] = useState(false);
 
   const handleAddEmi = () => {
     if (!emiAmount || !emiDate) return;
@@ -339,6 +341,20 @@ const ApplicationCard = ({
               Set EMI
             </button>
             <button
+              className="btn-approve"
+              style={{
+                background: app.status === "approved" ? "#ecfeff" : "#e5e7eb",
+                color: app.status === "approved" ? "#0891b2" : "#9ca3af",
+                cursor: app.status === "approved" ? "pointer" : "not-allowed",
+                opacity: app.status === "approved" ? 1 : 0.6,
+              }}
+              disabled={app.status !== "approved"}
+              onClick={() => setShowFeesModal(true)}
+            >
+              Fees Summary
+            </button>
+
+            <button
               className="btn-reject"
               onClick={() => onUpdateStatus(app._id, "rejected")}
             >
@@ -548,6 +564,13 @@ const ApplicationCard = ({
             </button>
           </div>
         </div>
+      )}
+      {showFeesModal && (
+        <FeesSummaryModal
+          app={app}
+          onClose={() => setShowFeesModal(false)}
+          refreshApp={() => onUpdateStatus(app._id, app.status)}
+        />
       )}
     </div>
   );

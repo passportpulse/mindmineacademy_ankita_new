@@ -70,13 +70,19 @@ exports.createApplication = async (req, res) => {
   }
 };
 
-
 exports.updateApplication = async (req, res) => {
   try {
     const { status, applicationId } = req.body;
 
-    // ✅ Only allow specific fields to update
-    const allowedUpdates = ["status", "applicationId", "fees"];
+    // ✅ Allow all required fields
+    const allowedUpdates = [
+      "status",
+      "applicationId",
+      "fees",
+      "emis",
+      "payments",
+    ];
+
     const updates = {};
 
     Object.keys(req.body).forEach((key) => {
@@ -99,13 +105,21 @@ exports.updateApplication = async (req, res) => {
       });
     }
 
+    // 🔥 AUTO CLEAN WHEN REJECTED
+    if (status === "rejected") {
+      updates.fees = 0;
+      updates.applicationId = "";
+      updates.emis = [];
+      updates.payments = [];
+    }
+
     const updated = await Application.findByIdAndUpdate(
       req.params.id,
       updates,
       {
         new: true,
-        runValidators: true, // 🔥 IMPORTANT
-      }
+        runValidators: true,
+      },
     );
 
     res.json({ success: true, data: updated });
@@ -113,7 +127,6 @@ exports.updateApplication = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Get All Applications
 exports.getApplications = async (req, res) => {

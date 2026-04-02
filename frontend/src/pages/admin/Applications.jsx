@@ -30,24 +30,22 @@ const Applications = () => {
     }
   };
   const onUpdateEmi = async (id, emis) => {
-  try {
-    await fetch(`${API_BASE_URL}/api/applications/${id}/emi`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        ...getAdminHeaders(),
-      },
-      body: JSON.stringify({ emis }),
-    });
+    try {
+      await fetch(`${API_BASE_URL}/api/applications/${id}/emi`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAdminHeaders(),
+        },
+        body: JSON.stringify({ emis }),
+      });
 
-    // refresh list
-    fetchApps();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-
+      // refresh list
+      fetchApps();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     fetchApps();
@@ -69,12 +67,28 @@ const Applications = () => {
       setFeeInputId(id);
       return;
     }
+
     try {
+      const bodyData =
+        status === "rejected"
+          ? {
+              status: "rejected",
+              fees: 0,
+              applicationId: "",
+              emis: [],
+              payments: [],
+            }
+          : { status };
+
       await fetch(`${API_BASE_URL}/api/applications/${id}`, {
         method: "PATCH",
-        headers: getAdminHeaders(),
-        body: JSON.stringify({ status }),
+        headers: {
+          "Content-Type": "application/json",
+          ...getAdminHeaders(),
+        },
+        body: JSON.stringify(bodyData),
       });
+
       fetchApps();
     } catch (err) {
       console.error(err);
