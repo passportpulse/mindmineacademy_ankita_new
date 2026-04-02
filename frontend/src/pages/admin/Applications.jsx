@@ -31,22 +31,27 @@ const Applications = () => {
   };
   const onUpdateEmi = async (id, emis) => {
     try {
-      await fetch(`${API_BASE_URL}/api/applications/${id}/emi`, {
+      const res = await fetch(`${API_BASE_URL}/api/applications/${id}`, {
+        // Removed /emi
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           ...getAdminHeaders(),
         },
-        body: JSON.stringify({ emis }),
+        body: JSON.stringify({ emis }), // This sends the updated EMI array to your general update route
       });
 
-      // refresh list
-      fetchApps();
+      if (res.ok) {
+        // refresh list
+        fetchApps();
+      } else {
+        const errorData = await res.json();
+        console.error("Server Error:", errorData);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Network Error:", err);
     }
   };
-
   useEffect(() => {
     fetchApps();
   }, [branch]);

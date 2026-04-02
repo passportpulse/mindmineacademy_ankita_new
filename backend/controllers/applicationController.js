@@ -278,49 +278,56 @@ exports.deleteEmi = async (req, res) => {
 // Add Payment (Down payment + EMI payment)
 exports.addPayment = async (req, res) => {
   try {
-    // ✅ Required fields
+    // 1. Extract variables from req.body first!
+    const { amount, method, txnId, emiIndex } = req.body;
+
+    // 2. Now perform validations
     if (!amount || !method) {
       return res.status(400).json({ message: "Amount & method required" });
     }
 
-    // ✅ NEW: Validate amount
-    if (amount <= 0) {
+    if (Number(amount) <= 0) {
       return res.status(400).json({ message: "Invalid amount" });
     }
 
-    // ✅ NEW: Validate method
     if (!["cash", "upi", "bank"].includes(method)) {
       return res.status(400).json({ message: "Invalid payment method" });
     }
 
-    // ✅ Existing: txnId check
     if (method !== "cash" && !txnId) {
       return res.status(400).json({ message: "Transaction ID required" });
     }
 
-    // 👇 THEN DB CALL
+    // 3. Database operation
     const app = await Application.findById(req.params.id);
+    if (!app) return res.status(404).json({ message: "Application not found" });
 
-    if (!app) return res.status(404).json({ message: "Not found" });
-
+    // 4. Record the payment
     app.payments.push({
-      amount,
+      amount: Number(amount),
       method,
       txnId: method === "cash" ? "" : txnId,
       emiIndex,
       date: new Date(),
     });
 
-    // Mark EMI paid
-    if (emiIndex !== undefined && emiIndex >= 0 && emiIndex < app.emis.length) {
+    // 5. Handle EMI status update if an index is provided
+    if (
+      emiIndex !== undefined &&
+      emiIndex !== null &&
+      emiIndex >= 0 &&
+      app.emis[emiIndex]
+    ) {
       app.emis[emiIndex].status = "paid";
     }
 
+    // 6. Update general EMI statuses (overdue/pending) and save
     updateEmiStatus(app);
     await app.save();
 
     res.json({ success: true, data: app });
   } catch (err) {
+    console.error("Payment Error:", err);
     res.status(500).json({ message: err.message });
   }
 };
